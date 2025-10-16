@@ -28,22 +28,15 @@
           "Entity"
         ],
         "summary": "Entity Search",
-        "description": "Search for Entities that match the provided search parameters. Either 'name' or 'entity_id' must be provided.",
+        "description": "Search for Entities that match the provided search parameters.",
         "operationId": "search_entities_search_entities_get",
         "parameters": [
           {
             "name": "name",
             "in": "query",
-            "required": false,
+            "required": true,
             "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
+              "type": "string",
               "description": "Entity name.",
               "title": "Name"
             },
@@ -86,25 +79,6 @@
               "title": "Jurisdiction"
             },
             "description": "Two-letter ISO country code the entity should be associated with."
-          },
-          {
-            "name": "entity_id",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string",
-                  "minLength": 12
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "description": "Entity ID to search for (ObjectId or UUID format).",
-              "title": "Entity Id"
-            },
-            "description": "Entity ID to search for (ObjectId or UUID format)."
           },
           {
             "name": "size",
@@ -166,23 +140,6 @@
                         "primary_role": "manufacturer",
                         "url": "https://globalmanufacturingcorp.example",
                         "monitor": true,
-                        "references": {
-                          "flags": {
-                            "total": 2
-                          },
-                          "relationships": {
-                            "total": 15,
-                            "from_relationships": {
-                              "count": 8
-                            },
-                            "to_relationships": {
-                              "count": 7
-                            }
-                          },
-                          "risk_events": {
-                            "total": 1
-                          }
-                        },
                         "external_ids": [
                           {
                             "id": "US-12345678-901",
@@ -194,7 +151,8 @@
                             "type": "lei",
                             "source": "gleif"
                           }
-                        ]
+                        ],
+                        "modified_date": "2024-10-15T14:30:00Z"
                       },
                       {
                         "id": "507f1f77bcf86cd799439012",
@@ -209,17 +167,12 @@
                         "flagged": false,
                         "description": "Manufacturing solutions provider",
                         "primary_role": "supplier",
-                        "references": {
-                          "flags": {
-                            "total": 0
-                          },
-                          "relationships": {
-                            "total": 3
-                          },
-                          "risk_events": {
-                            "total": 0
-                          }
-                        }
+                        "count_inferred_relationships": {
+                          "depth": 3,
+                          "value": 3,
+                          "last_updated": "2025-10-08T19:34:19.447000Z"
+                        },
+                        "modified_date": "2024-10-20T09:15:00Z"
                       }
                     ]
                   },
@@ -241,17 +194,7 @@
                         "description": "Electronics components supplier with compliance concerns",
                         "primary_role": "supplier",
                         "monitor": true,
-                        "references": {
-                          "flags": {
-                            "total": 3
-                          },
-                          "relationships": {
-                            "total": 12
-                          },
-                          "risk_events": {
-                            "total": 2
-                          }
-                        }
+                        "modified_date": "2024-10-18T16:45:00Z"
                       }
                     ]
                   },
@@ -273,24 +216,19 @@
                         "description": "High-precision manufacturing and engineering services",
                         "primary_role": "manufacturer",
                         "url": "https://great-engineering-example.de",
-                        "references": {
-                          "flags": {
-                            "total": 0
-                          },
-                          "relationships": {
-                            "total": 8
-                          },
-                          "risk_events": {
-                            "total": 0
-                          }
-                        },
                         "external_ids": [
                           {
                             "id": "HRB123456",
                             "type": "company_registration",
                             "source": "german_trade_register"
                           }
-                        ]
+                        ],
+                        "count_inferred_relationships": {
+                          "depth": 3,
+                          "value": 3,
+                          "last_updated": "2025-01-01T00:00:00Z"
+                        },
+                        "modified_date": "2024-10-10T11:20:00Z"
                       }
                     ]
                   },
@@ -330,6 +268,21 @@
               }
             }
           },
+          "500": {
+            "description": "Internal server error - contact support",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "internal_error": {
+                    "summary": "Internal server error",
+                    "value": {
+                      "detail": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
+          },
           "422": {
             "description": "Validation Error",
             "content": {
@@ -349,22 +302,15 @@
           "Entity"
         ],
         "summary": "Entity Resolution",
-        "description": "Resolve to the top-scoring Entity that matches the provided search parameters. Either 'name' or 'entity_id' must be provided.",
+        "description": "Resolve to the top-scoring Entity that matches the provided search parameters.",
         "operationId": "resolve_entity_resolve_entity_get",
         "parameters": [
           {
             "name": "name",
             "in": "query",
-            "required": false,
+            "required": true,
             "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
+              "type": "string",
               "description": "Entity name.",
               "title": "Name"
             },
@@ -407,25 +353,6 @@
               "title": "Jurisdiction"
             },
             "description": "Two-letter ISO country code the entity should be associated with."
-          },
-          {
-            "name": "entity_id",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string",
-                  "minLength": 12
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "description": "Entity ID to search for (ObjectId or UUID format).",
-              "title": "Entity Id"
-            },
-            "description": "Entity ID to search for (ObjectId or UUID format)."
           },
           {
             "name": "flagged_only",
@@ -474,23 +401,6 @@
                         "url": "https://contoso.example",
                         "monitor": true,
                         "auto_research": true,
-                        "references": {
-                          "flags": {
-                            "total": 0
-                          },
-                          "relationships": {
-                            "total": 247,
-                            "from_relationships": {
-                              "count": 156
-                            },
-                            "to_relationships": {
-                              "count": 91
-                            }
-                          },
-                          "risk_events": {
-                            "total": 0
-                          }
-                        },
                         "external_ids": [
                           {
                             "id": "32019387069",
@@ -507,7 +417,13 @@
                             "type": "ticker",
                             "source": "nasdaq"
                           }
-                        ]
+                        ],
+                        "count_inferred_relationships": {
+                          "depth": 3,
+                          "value": 3,
+                          "last_updated": "2025-10-08T19:34:19.447000Z"
+                        },
+                        "modified_date": "2024-10-22T08:30:00Z"
                       }
                     ]
                   },
@@ -530,17 +446,6 @@
                         "primary_role": "manufacturer",
                         "url": "https://contoso.example",
                         "monitor": true,
-                        "references": {
-                          "flags": {
-                            "total": 0
-                          },
-                          "relationships": {
-                            "total": 189
-                          },
-                          "risk_events": {
-                            "total": 0
-                          }
-                        },
                         "external_ids": [
                           {
                             "id": "06-1232893",
@@ -552,7 +457,8 @@
                             "type": "ticker",
                             "source": "nasdaq"
                           }
-                        ]
+                        ],
+                        "modified_date": "2024-10-21T14:15:00Z"
                       }
                     ]
                   },
@@ -575,23 +481,6 @@
                         "primary_role": "manufacturer",
                         "url": "https://acme.example",
                         "monitor": true,
-                        "references": {
-                          "flags": {
-                            "total": 0
-                          },
-                          "relationships": {
-                            "total": 412,
-                            "from_relationships": {
-                              "count": 298
-                            },
-                            "to_relationships": {
-                              "count": 114
-                            }
-                          },
-                          "risk_events": {
-                            "total": 0
-                          }
-                        },
                         "external_ids": [
                           {
                             "id": "US-7200001008846",
@@ -603,7 +492,8 @@
                             "type": "ticker",
                             "source": "nyse"
                           }
-                        ]
+                        ],
+                        "modified_date": "2024-10-19T10:45:00Z"
                       }
                     ]
                   },
@@ -626,24 +516,14 @@
                         "primary_role": "trader",
                         "monitor": true,
                         "auto_research": false,
-                        "references": {
-                          "flags": {
-                            "total": 5
-                          },
-                          "relationships": {
-                            "total": 23
-                          },
-                          "risk_events": {
-                            "total": 3
-                          }
-                        },
                         "external_ids": [
                           {
                             "id": "RU-1027700132195",
                             "type": "ogrn",
                             "source": "russian_business_register"
                           }
-                        ]
+                        ],
+                        "modified_date": "2024-10-23T12:00:00Z"
                       }
                     ]
                   },
@@ -656,27 +536,46 @@
               }
             }
           },
-          "400": {
-            "description": "Bad Request - Invalid resolution parameters",
+          "422": {
+            "description": "Invalid resolution parameters.",
             "content": {
               "application/json": {
                 "examples": {
-                  "missing_search_criteria": {
-                    "summary": "Missing required search criteria",
+                  "invalid_jurisdiction": {
+                    "summary": "Invalid jurisdiction code",
+                    "description": "Provided jurisdiction has too many characters",
                     "value": {
-                      "detail": "Either name or entity_id must be provided"
+                      "detail": [
+                        {
+                          "type": "string_too_long",
+                          "loc": [
+                            "query",
+                            "jurisdiction"
+                          ],
+                          "msg": "String should have at most 2 characters",
+                          "input": "USA",
+                          "ctx": {
+                            "max_length": 2
+                          }
+                        }
+                      ]
                     }
                   }
                 }
               }
             }
           },
-          "422": {
-            "description": "Validation Error",
+          "500": {
+            "description": "Internal server error - contact support",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                "examples": {
+                  "internal_error": {
+                    "summary": "Internal server error",
+                    "value": {
+                      "detail": "Internal server error"
+                    }
+                  }
                 }
               }
             }
@@ -690,7 +589,7 @@
           "Entity"
         ],
         "summary": "Get Entities by Flag Type",
-        "description": "Get entities that have flags of a specific flag type.\n\nThis endpoint allows customers to query entities based on specific compliance flags.\nResults are paginated and filtered by organization access control.\n\nOnly entities with flags that are either public or belong to the user's organization\nwill be returned.\n\nArgs:\n    flag_type_id: ObjectId of the flag type from flag_types collection\n    page: Page number (1-based) for pagination\n    limit: Maximum number of entities to return per page\n\nReturns:\n    Paginated list of entities with the specified flag type, including:\n    - Entity details (name, jurisdiction, type, status)\n    - TV scores\n    - Flag information\n    - Pagination metadata",
+        "description": "Get entities that have flags of a specific flag type. To view possible flag types, use\nthe Get Flags Types endpoint `/flags/types`.\n\nThis endpoint allows customers to query entities based on specific compliance flags.\nResults are filtered by organization, meaning only entities with flags that are either\npublic or belong to the user's organization will be returned.\n\nThe response includes a list of entities that have a flag of the specified type, including information\non entity details, Tradeverifyd scores, and flag information.\nBecause the response can be large, entities are returned across multiple pages of the response.\nThe response includes information on the maximum number of pages.\nUse the `limit` parameter to specify how many results should be returned in one page.\nUse the `page` parameter to select a page number.",
         "operationId": "get_entities_by_flag_type_entities_by_flag_type__flag_type_id__get",
         "parameters": [
           {
@@ -767,16 +666,7 @@
                                 {
                                   "url": "https://www.defense.gov/News/Releases/Release/Article/4023145/"
                                 }
-                              ],
-                              "status": {
-                                "state": "confirmed",
-                                "confidence": "almost certain",
-                                "sources": [
-                                  {
-                                    "url": "https://www.defense.gov/News/Releases/Release/Article/4023145/"
-                                  }
-                                ]
-                              }
+                              ]
                             }
                           ],
                           "aliases": [
@@ -842,7 +732,7 @@
             }
           },
           "500": {
-            "description": "Internal server error",
+            "description": "Internal server error - contact support",
             "content": {
               "application/json": {
                 "examples": {
@@ -894,7 +784,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/EntityDTO"
+                  "$ref": "#/components/schemas/GetEntityResponse"
                 },
                 "examples": {
                   "entity_id_search": {
@@ -906,24 +796,18 @@
                       "description": "Large-scale manufacturing company specializing in automotive components",
                       "primary_role": "manufacturer",
                       "aliases": [
-                        {
-                          "type": "lei",
-                          "source": "https://lei-lookup.com/record/example",
-                          "id": "1edd99cdb6f5418e"
-                        }
+                        "Contoso",
+                        "EX CONTOSO"
                       ],
                       "url": "https://globalmanufacturingcorp.example",
                       "jurisdiction": "US",
                       "addresses": [
                         "123 Main Street, Anytown, State, 12345"
                       ],
-                      "extended_data": {},
-                      "auto_research": true,
                       "monitor": false,
                       "created_at": "1970-01-01T00:00:00.000Z",
                       "modified": "1970-01-01T00:00:00.000Z",
                       "region": "State",
-                      "data_score": 50,
                       "affiliated_jurisdiction": "CA",
                       "tradeverifyd_score": 550,
                       "references": {
@@ -942,7 +826,27 @@
                         "risk_events": {
                           "total": 1
                         }
+                      },
+                      "count_inferred_relationships": {
+                        "depth": 2,
+                        "value": 2,
+                        "last_updated": "1970-01-01T00:00:00.000Z"
                       }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error - contact support",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "internal_error": {
+                    "summary": "Internal server error",
+                    "value": {
+                      "detail": "Internal server error"
                     }
                   }
                 }
@@ -992,6 +896,21 @@
                     "$ref": "#/components/schemas/RiskEvent"
                   },
                   "title": "Response Get Entity Risk Events Entities  Entity Id  Risk Events Get"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error - contact support",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "internal_error": {
+                    "summary": "Internal server error",
+                    "value": {
+                      "detail": "Internal server error"
+                    }
+                  }
                 }
               }
             }
@@ -1132,6 +1051,21 @@
                           "jurisdiction": "CN"
                         }
                       ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error - contact support",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "internal_error": {
+                    "summary": "Internal server error",
+                    "value": {
+                      "detail": "Internal server error"
                     }
                   }
                 }
@@ -1285,6 +1219,21 @@
                           "jurisdiction": "CN"
                         }
                       ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error - contact support",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "internal_error": {
+                    "summary": "Internal server error",
+                    "value": {
+                      "detail": "Internal server error"
                     }
                   }
                 }
@@ -1465,18 +1414,9 @@
                         "123 abc street chicago illinois 12345"
                       ],
                       "aliases": [
-                        {
-                          "name": "Company A. Inc.",
-                          "language": "en"
-                        },
-                        {
-                          "name": "Company A.",
-                          "language": "en"
-                        },
-                        {
-                          "name": "Company A. LLC",
-                          "language": "en"
-                        }
+                        "Company A. Inc.",
+                        "Company A.",
+                        "Company A. LLC"
                       ],
                       "ids": [
                         {
@@ -1503,10 +1443,7 @@
                       "coordinates": [],
                       "addresses": [],
                       "aliases": [
-                        {
-                          "name": "Company B. Inc.",
-                          "language": "en"
-                        }
+                        "Company B. Inc."
                       ],
                       "ids": [
                         {
@@ -1540,10 +1477,7 @@
                       "coordinates": [],
                       "addresses": [],
                       "aliases": [
-                        {
-                          "name": "Company C. Inc.",
-                          "language": "en"
-                        }
+                        "Company C. Inc."
                       ],
                       "ids": [
                         {
@@ -1601,10 +1535,7 @@
                         "123 abc street"
                       ],
                       "aliases": [
-                        {
-                          "name": "Company E. Inc.",
-                          "language": "en"
-                        }
+                        "Company E. Inc."
                       ],
                       "ids": [
                         {
@@ -1659,6 +1590,21 @@
                   "records": 134,
                   "total_records": 134,
                   "total_pages": 0
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error - contact support",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "internal_error": {
+                    "summary": "Internal server error",
+                    "value": {
+                      "detail": "Internal server error"
+                    }
+                  }
                 }
               }
             }
@@ -1771,6 +1717,21 @@
               }
             }
           },
+          "500": {
+            "description": "Internal server error - contact support",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "internal_error": {
+                    "summary": "Internal server error",
+                    "value": {
+                      "detail": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
+          },
           "422": {
             "description": "Validation Error",
             "content": {
@@ -1790,7 +1751,7 @@
           "Relationships"
         ],
         "summary": "Get Entity Relationships",
-        "description": "Retrieve a graph of relationships for a single Entity.\n\nThis endpoint provides information about the relationships of an Entity,\nsuch as partnerships, affiliations, or any other defined connections. The\nconnected Entities in the returned graph include added context for each\nEntity, such as active Flags and Risk Events.\n\nIf the desired output is to return a graph of relationships with at least\none flag along the path with complete entity, relationship, and flag details\nfiltered by HS codes, use the flagged_relationships endpoint instead.",
+        "description": "## **DEPRECATED**: This endpoint will be unavailable after December 31, 2025. Use of this endpoint may result in 500 errors or browser issues. Please use the Get Entity Graph endpoint `/entities/{entity_id}/graph` instead.\n\nRetrieve a graph of relationships for a single Entity.\n\nThis endpoint provides information about the relationships of an Entity,\nsuch as partnerships, affiliations, or any other defined connections. The\nconnected Entities in the returned graph include added context for each\nEntity, such as active Flags and Risk Events.\n\nIf the desired output is to return a graph of relationships with at least\none flag along the path with complete entity, relationship, and flag details\nfiltered by HS codes, use the flagged_relationships endpoint instead.",
         "operationId": "get_entity_relationships_relationships__entity_id__get",
         "parameters": [
           {
@@ -1938,6 +1899,21 @@
               }
             }
           },
+          "500": {
+            "description": "Internal server error - contact support",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "internal_error": {
+                    "summary": "Internal server error",
+                    "value": {
+                      "detail": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
+          },
           "422": {
             "description": "Validation Error",
             "content": {
@@ -2059,6 +2035,21 @@
                     "summary": "Risk event does not exist",
                     "value": {
                       "detail": "Risk Event '65f8a2b1c3d4e5f6a7b8c9d9' does not exist."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error - contact support",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "internal_error": {
+                    "summary": "Internal server error",
+                    "value": {
+                      "detail": "Internal server error"
                     }
                   }
                 }
@@ -2476,6 +2467,21 @@
               }
             }
           },
+          "500": {
+            "description": "Internal server error - contact support",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "internal_error": {
+                    "summary": "Internal server error",
+                    "value": {
+                      "detail": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
+          },
           "422": {
             "description": "Validation Error",
             "content": {
@@ -2516,6 +2522,21 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ReportStatusResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error - contact support",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "internal_error": {
+                    "summary": "Internal server error",
+                    "value": {
+                      "detail": "Internal server error"
+                    }
+                  }
                 }
               }
             }
@@ -2645,6 +2666,21 @@
               }
             }
           },
+          "500": {
+            "description": "Internal server error - contact support",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "internal_error": {
+                    "summary": "Internal server error",
+                    "value": {
+                      "detail": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
+          },
           "422": {
             "description": "Validation Error",
             "content": {
@@ -2751,6 +2787,21 @@
               }
             }
           },
+          "500": {
+            "description": "Internal server error - contact support",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "internal_error": {
+                    "summary": "Internal server error",
+                    "value": {
+                      "detail": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
+          },
           "422": {
             "description": "Validation Error",
             "content": {
@@ -2840,6 +2891,21 @@
               "application/pdf": {}
             }
           },
+          "500": {
+            "description": "Internal server error - contact support",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "internal_error": {
+                    "summary": "Internal server error",
+                    "value": {
+                      "detail": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
+          },
           "422": {
             "description": "Validation Error",
             "content": {
@@ -2859,7 +2925,7 @@
           "Flags"
         ],
         "summary": "Upload Flags",
-        "description": "Upload flags for processing. Expected time to process and be available in the\nsystem is approximately 5-10 minutes.\n\nThis endpoint allows uploading flags for entities. Each flag must be associated with an entity\nand contain information about potential risks or issues.\n\n**Entity Identification Requirements:**\n- Either provide `entity_id` (preferred) OR both `entity_name` and `entity_jurisdiction`\n- If using name/jurisdiction, both fields are required to uniquely identify the entity\n\n**Required Fields:**\n- `flag_type`: The primary category of the flag (e.g., \"Sanctions & Restricted Entities Risk\",\n\"Worker & Consumer Safety Risk\", \"Environmental Violations Risk\")\n- `flag_subtype`: A more specific classification within the flag type (e.g.,\n\"Financial Crimes & Violations\", \"International Sanctions\", \"Terrorism Financing\")\n- `source_location`: The URL or location where the flag information was found\n(e.g., \"https://example.example/news/article\")\n- `description`: Detailed explanation of the flag and its significance\n\nNote: `flag_type` and `flag_subtype` must fall into one of the existing flag types defined in the system.\n\n**Optional Fields:**\n- `tags`: Single word identifier for categorizing flags by subcategories\n- `time_start`: Start date/time when the flag becomes valid\n- `time_end`: End date/time when the flag expires\n\n**Response:**\nReturns a summary of the processing results including the total number of flags submitted\nand how many were successfully inserted into the system.",
+        "description": "Upload flags for processing. Expected time to process and be available in the\nsystem is approximately 5-10 minutes.\n\nThis endpoint allows uploading flags for entities. Each flag must be associated with an entity\nand contain information about potential risks or issues.\n\n**This information is private to your organization only and will not be shared with any other organization.**\n\n**Required Fields:**\n- `entity_id`: Unique identifier for the entity associated with the flag\n- `flag_type`: The primary category of the flag (e.g., \"Sanctions & Restricted Entities Risk\",\n\"Worker & Consumer Safety Risk\", \"Environmental Violations Risk\")\n- `flag_subtype`: A more specific classification within the flag type (e.g.,\n\"Financial Crimes & Violations\", \"International Sanctions\", \"Terrorism Financing\")\n- `source_location`: The URL or location where the flag information was found\n(e.g., \"https://example.example/news/article\")\n- `description`: Detailed explanation of the flag and its significance\n\nNote: `flag_type` and `flag_subtype` must fall into one of the existing flag types defined in the system.\n\n**Optional Fields:**\n- `tags`: Single word identifier for categorizing flags by subcategories\n- `time_start`: Start date/time when the flag becomes valid\n- `time_end`: End date/time when the flag expires\n\n**Response:**\nReturns a summary of the processing results including the total number of flags submitted\nand how many were successfully inserted into the system.",
         "operationId": "upload_bulk_staged_flags_external_flags_upload_post",
         "requestBody": {
           "content": {
@@ -2892,8 +2958,7 @@
                   "description": "Flag for negative media coverage. Uses entity name and jurisdiction for identification.",
                   "value": [
                     {
-                      "entity_name": "Suspicious Manufacturing Ltd",
-                      "entity_jurisdiction": "CN",
+                      "entity_id": "497f1f77bef96cd799439012",
                       "flag_type": "Worker & Consumer Safety Risk",
                       "flag_subtype": "Workplace & Labor Violations",
                       "description": "Media reports indicate potential labor rights violations at manufacturing facilities",
@@ -2933,8 +2998,7 @@
                       "time_start": "2024-03-01T00:00:00Z"
                     },
                     {
-                      "entity_name": "Risky Supplier Inc",
-                      "entity_jurisdiction": "US",
+                      "entity_id": "492f1f66bcf86cd784439012",
                       "flag_type": "Sanctions & Restricted Entities Risk",
                       "flag_subtype": "Financial Crimes & Violations",
                       "description": "Reports of accounting irregularities and potential fraud",
@@ -2987,12 +3051,6 @@
             "content": {
               "application/json": {
                 "examples": {
-                  "entity_validation_error": {
-                    "summary": "Entity identification error",
-                    "value": {
-                      "detail": "Validation error: Either 'entity_id' OR both 'entity_name' and 'entity_jurisdiction' must be provided"
-                    }
-                  },
                   "invalid_payload": {
                     "summary": "Invalid flags payload",
                     "value": {
@@ -3010,11 +3068,50 @@
             }
           },
           "422": {
-            "description": "Validation Error",
+            "description": "Missing entity_id",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                "examples": {
+                  "missing_entity_id": {
+                    "summary": "Invalid upload",
+                    "description": "entity_id is missing from the provided flag(s)",
+                    "value": {
+                      "detail": [
+                        {
+                          "type": "missing",
+                          "loc": [
+                            "body",
+                            0,
+                            "entity_id"
+                          ],
+                          "msg": "Field required",
+                          "input": {
+                            "flag_type": "Sanctions & Restricted Entities Risk",
+                            "flag_subtype": "International Sanctions",
+                            "description": "Entity appears on OFAC Specially Designated Nationals List for involvement in illicit activities",
+                            "tags": "financial_crimes",
+                            "source_location": "https://sanctionssearch.ofac.treas.example/Details.aspx?id=12345",
+                            "time_start": "2024-01-15T00:00:00Z"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error - contact support",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "internal_error": {
+                    "summary": "Internal server error",
+                    "value": {
+                      "detail": "Internal server error"
+                    }
+                  }
                 }
               }
             }
@@ -3028,7 +3125,7 @@
           "Flags"
         ],
         "summary": "Update a flag",
-        "description": "Update an existing Flag.\n\nUsers can only update Flags that belong to their organization.\n\nThe provided information will override existing information. It is not a merge.\n\n### Args:\n- flag_id: ID for Flag undergoing update.\n- FlagUpdateItem: JSON object specifying Flag information for update.\n\n### Returns:\n- The Flag object representing the updated flag.\n\n### Example Usage:\n- Requesting `PUT /update_flag` with a valid flag_id that belongs to the user's organization\n    will update the specified flag.",
+        "description": "Update an existing Flag.\nUsers can only update Flags that belong to their organization.\nThe provided information will override existing information. It is not a merge.\n\n**Required Fields**:\n- `flag_id`: ID for Flag undergoing update.\n- Flag information for update.\n\n**Returns**:\n- The Flag object representing the updated flag.\n\n**Example Usage**:\n- Requesting `PUT /v1/flags/update/{flag_id}` with a valid `flag_id` that belongs to the user's organization\n    will update the specified flag.",
         "operationId": "update_flag_flags_update__flag_id__put",
         "parameters": [
           {
@@ -3133,16 +3230,7 @@
                           "url": "https://sanctionssearch.ofac.treas.example/Details.aspx?id=12345",
                           "title": "News on OFAC Sanctions"
                         }
-                      ],
-                      "status": {
-                        "state": "confirmed",
-                        "confidence": "almost certain",
-                        "sources": [
-                          {
-                            "url": "https://sanctionssearch.ofac.treas.example/Details.aspx?id=12345"
-                          }
-                        ]
-                      }
+                      ]
                     }
                   },
                   "adverse_media_flag_updated": {
@@ -3161,16 +3249,7 @@
                           "url": "https://news.example/labor-investigation-update-2024",
                           "title": "Results of Labor Investigation 2024"
                         }
-                      ],
-                      "status": {
-                        "state": "suspected",
-                        "confidence": "likely",
-                        "sources": [
-                          {
-                            "url": "https://news.example/labor-investigation-update-2024"
-                          }
-                        ]
-                      }
+                      ]
                     }
                   }
                 }
@@ -3192,6 +3271,21 @@
                     "summary": "Flag belongs to different organization",
                     "value": {
                       "detail": "Flag does not belong to user's organization."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error - contact support",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "internal_error": {
+                    "summary": "Internal server error",
+                    "value": {
+                      "detail": "Internal server error"
                     }
                   }
                 }
@@ -3230,6 +3324,21 @@
                   },
                   "type": "array",
                   "title": "Response Get Flags Types Flags Types Get"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error - contact support",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "internal_error": {
+                    "summary": "Internal server error",
+                    "value": {
+                      "detail": "Internal server error"
+                    }
+                  }
                 }
               }
             }
@@ -3376,16 +3485,6 @@
                             "title": "Export Compliance Review 2024"
                           }
                         ],
-                        "status": {
-                          "state": "confirmed",
-                          "confidence": "almost certain",
-                          "sources": [
-                            {
-                              "id": "3ce08897-5905-4b30-a2e9-a5da05a2430b",
-                              "url": "https://bis.doc.example/index.php/policy-guidance/entity-list"
-                            }
-                          ]
-                        },
                         "depth": {
                           "depth": 0,
                           "direction": "entry"
@@ -3407,15 +3506,6 @@
                             "url": "https://news.example/acme-labor-violations-2024"
                           }
                         ],
-                        "status": {
-                          "state": "suspected",
-                          "confidence": "likely",
-                          "sources": [
-                            {
-                              "url": "https://news.example/acme-labor-violations-2024"
-                            }
-                          ]
-                        },
                         "depth": {
                           "depth": 1,
                           "direction": "upstream"
@@ -3442,16 +3532,7 @@
                           {
                             "url": "https://sanctionssearch.ofac.treas.example/Details.aspx?id=12345"
                           }
-                        ],
-                        "status": {
-                          "state": "confirmed",
-                          "confidence": "almost certain",
-                          "sources": [
-                            {
-                              "url": "https://sanctionssearch.ofac.treas.example/Details.aspx?id=12345"
-                            }
-                          ]
-                        }
+                        ]
                       },
                       {
                         "id": "507f1f77bcf86cd799439020",
@@ -3469,16 +3550,7 @@
                           {
                             "url": "https://www.un.example/securitycouncil/sanctions/1737/materials"
                           }
-                        ],
-                        "status": {
-                          "state": "confirmed",
-                          "confidence": "almost certain",
-                          "sources": [
-                            {
-                              "url": "https://www.un.example/securitycouncil/sanctions/1737/materials"
-                            }
-                          ]
-                        }
+                        ]
                       }
                     ]
                   },
@@ -3527,6 +3599,21 @@
               }
             }
           },
+          "500": {
+            "description": "Internal server error - contact support",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "internal_error": {
+                    "summary": "Internal server error",
+                    "value": {
+                      "detail": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
+          },
           "422": {
             "description": "Validation Error",
             "content": {
@@ -3559,6 +3646,21 @@
                   },
                   "type": "array",
                   "title": "Response Get Organizational Units Organizations Organizational Units Get"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error - contact support",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "internal_error": {
+                    "summary": "Internal server error",
+                    "value": {
+                      "detail": "Internal server error"
+                    }
+                  }
                 }
               }
             }
@@ -3826,6 +3928,21 @@
               }
             }
           },
+          "500": {
+            "description": "Internal server error - contact support",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "internal_error": {
+                    "summary": "Internal server error",
+                    "value": {
+                      "detail": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
+          },
           "422": {
             "description": "Validation Error",
             "content": {
@@ -4016,6 +4133,21 @@
                 }
               }
             }
+          },
+          "500": {
+            "description": "Internal server error - contact support",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "internal_error": {
+                    "summary": "Internal server error",
+                    "value": {
+                      "detail": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -4144,6 +4276,21 @@
                     "summary": "Shipment does not exist",
                     "value": {
                       "detail": "Shipment not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error - contact support",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "internal_error": {
+                    "summary": "Internal server error",
+                    "value": {
+                      "detail": "Internal server error"
                     }
                   }
                 }
@@ -4336,6 +4483,21 @@
                     "summary": "Shipment update failed",
                     "value": {
                       "detail": "An error occurred updating the shipment"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error - contact support",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "internal_error": {
+                    "summary": "Internal server error",
+                    "value": {
+                      "detail": "Internal server error"
                     }
                   }
                 }
@@ -4650,6 +4812,21 @@
               }
             }
           },
+          "500": {
+            "description": "Internal server error - contact support",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "internal_error": {
+                    "summary": "Internal server error",
+                    "value": {
+                      "detail": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
+          },
           "422": {
             "description": "Validation Error",
             "content": {
@@ -4801,6 +4978,21 @@
               }
             }
           },
+          "500": {
+            "description": "Internal server error - contact support",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "internal_error": {
+                    "summary": "Internal server error",
+                    "value": {
+                      "detail": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
+          },
           "422": {
             "description": "Validation Error",
             "content": {
@@ -4935,6 +5127,21 @@
                     "summary": "SIR not found",
                     "value": {
                       "detail": "Supplier Information Request not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error - contact support",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "internal_error": {
+                    "summary": "Internal server error",
+                    "value": {
+                      "detail": "Internal server error"
                     }
                   }
                 }
@@ -5131,6 +5338,21 @@
               }
             }
           },
+          "500": {
+            "description": "Internal server error - contact support",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "internal_error": {
+                    "summary": "Internal server error",
+                    "value": {
+                      "detail": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
+          },
           "422": {
             "description": "Validation Error",
             "content": {
@@ -5300,6 +5522,21 @@
               }
             }
           },
+          "500": {
+            "description": "Internal server error - contact support",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "internal_error": {
+                    "summary": "Internal server error",
+                    "value": {
+                      "detail": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
+          },
           "422": {
             "description": "Validation Error",
             "content": {
@@ -5340,6 +5577,21 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/CBPRequestListing"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error - contact support",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "internal_error": {
+                    "summary": "Internal server error",
+                    "value": {
+                      "detail": "Internal server error"
+                    }
+                  }
                 }
               }
             }
@@ -5394,6 +5646,21 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/CBPRequestListing"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error - contact support",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "internal_error": {
+                    "summary": "Internal server error",
+                    "value": {
+                      "detail": "Internal server error"
+                    }
+                  }
                 }
               }
             }
@@ -5490,6 +5757,21 @@
               }
             }
           },
+          "500": {
+            "description": "Internal server error - contact support",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "internal_error": {
+                    "summary": "Internal server error",
+                    "value": {
+                      "detail": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
+          },
           "422": {
             "description": "Validation Error",
             "content": {
@@ -5528,6 +5810,21 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/SubmitPresentationResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error - contact support",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "internal_error": {
+                    "summary": "Internal server error",
+                    "value": {
+                      "detail": "Internal server error"
+                    }
+                  }
                 }
               }
             }
@@ -5923,6 +6220,21 @@
               }
             }
           },
+          "500": {
+            "description": "Internal server error - contact support",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "internal_error": {
+                    "summary": "Internal server error",
+                    "value": {
+                      "detail": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
+          },
           "422": {
             "description": "Validation Error",
             "content": {
@@ -6027,6 +6339,21 @@
                 }
               }
             }
+          },
+          "500": {
+            "description": "Internal server error - contact support",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "internal_error": {
+                    "summary": "Internal server error",
+                    "value": {
+                      "detail": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -6063,6 +6390,21 @@
                     "$ref": "#/components/schemas/CredentialListItem"
                   },
                   "title": "Response Get Shipment Verifiable Credentials Credentials List Shipment  Shipment Id  Get"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error - contact support",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "internal_error": {
+                    "summary": "Internal server error",
+                    "value": {
+                      "detail": "Internal server error"
+                    }
+                  }
                 }
               }
             }
@@ -6210,6 +6552,21 @@
               }
             }
           },
+          "500": {
+            "description": "Internal server error - contact support",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "internal_error": {
+                    "summary": "Internal server error",
+                    "value": {
+                      "detail": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
+          },
           "422": {
             "description": "Validation Error",
             "content": {
@@ -6256,7 +6613,19 @@
             "description": "Credential not found"
           },
           "500": {
-            "description": "Internal server error"
+            "description": "Internal server error - contact support",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "internal_error": {
+                    "summary": "Internal server error",
+                    "value": {
+                      "detail": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
           },
           "422": {
             "description": "Validation Error",
@@ -6378,6 +6747,21 @@
                     "summary": "Credential not found",
                     "value": {
                       "detail": "Verifiable credential not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error - contact support",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "internal_error": {
+                    "summary": "Internal server error",
+                    "value": {
+                      "detail": "Internal server error"
                     }
                   }
                 }
@@ -6533,6 +6917,21 @@
               }
             }
           },
+          "500": {
+            "description": "Internal server error - contact support",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "internal_error": {
+                    "summary": "Internal server error",
+                    "value": {
+                      "detail": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
+          },
           "422": {
             "description": "Validation Error",
             "content": {
@@ -6565,6 +6964,21 @@
                   },
                   "type": "array",
                   "title": "Response Get Schemas Credentials Schemas Get"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error - contact support",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "internal_error": {
+                    "summary": "Internal server error",
+                    "value": {
+                      "detail": "Internal server error"
+                    }
+                  }
                 }
               }
             }
@@ -6999,6 +7413,21 @@
               }
             }
           },
+          "500": {
+            "description": "Internal server error - contact support",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "internal_error": {
+                    "summary": "Internal server error",
+                    "value": {
+                      "detail": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
+          },
           "422": {
             "description": "Validation Error",
             "content": {
@@ -7215,7 +7644,7 @@
             "anyOf": [
               {
                 "items": {
-                  "$ref": "#/components/schemas/Alias"
+                  "type": "string"
                 },
                 "type": "array"
               },
@@ -9551,6 +9980,20 @@
               }
             ]
           },
+          "aliases": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Aliases"
+          },
           "affiliated_jurisdiction": {
             "anyOf": [
               {
@@ -9633,7 +10076,7 @@
             "anyOf": [
               {
                 "items": {
-                  "$ref": "#/components/schemas/Alias"
+                  "type": "string"
                 },
                 "type": "array"
               },
@@ -9642,7 +10085,7 @@
               }
             ],
             "title": "Aliases",
-            "description": "Aliases associated with the entity"
+            "description": "Alternative names and aliases"
           },
           "url": {
             "anyOf": [
@@ -9787,7 +10230,7 @@
           "references": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/earthstream_services__services__entity__common__entity_dto__EntityReferences"
+                "$ref": "#/components/schemas/EntityReferences"
               },
               {
                 "type": "null"
@@ -9795,6 +10238,18 @@
             ],
             "title": "Entity References",
             "description": "Summary counts of flags, relationships, and other references associated with this entity. Not specific to query."
+          },
+          "count_inferred_relationships": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/earthstream_services__services__entity__common__entity_dto__EntityGraphCounts"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Inferred Relationships Count",
+            "description": "The number of inferred relationships in the graph.  Will not be present if the graph counts have not been calculated yet."
           }
         },
         "type": "object",
@@ -9839,45 +10294,6 @@
         "type": "object",
         "title": "EntityDTOSubscription",
         "description": "Subscription information associated with Entity creation via API."
-      },
-      "EntityGraphCounts": {
-        "properties": {
-          "id": {
-            "type": "string",
-            "title": "Id",
-            "description": "Unique Entity identifier."
-          },
-          "name": {
-            "type": "string",
-            "title": "Name",
-            "description": "The formal or recognized name of the entity."
-          },
-          "child_count": {
-            "type": "integer",
-            "title": "Child Count",
-            "description": "The number of distinct related entities begining with the given entity.",
-            "default": 1
-          },
-          "relationship_count": {
-            "type": "integer",
-            "title": "Relationship Count",
-            "description": "The number of total relationships begining with the given entity.",
-            "default": 1
-          },
-          "flag_count": {
-            "type": "integer",
-            "title": "Flag Count",
-            "description": "The number of flags found in the entities relationships.",
-            "default": 0
-          }
-        },
-        "type": "object",
-        "required": [
-          "id",
-          "name"
-        ],
-        "title": "EntityGraphCounts",
-        "description": "The response model delivering a list of entities and their respective graph counts\nwith a given default depth."
       },
       "EntityProductsEntry": {
         "properties": {
@@ -9924,6 +10340,34 @@
         "title": "EntityProductsEntry",
         "description": "Incoming or outgoing HS codes for the entity, grouped by organization.\n\nThese entries are populated at regular intervals by an asynchronous\naggregation, and may be stale.\n\nAttributes:\n    direction: Whether the parent entity is shipper or consignee of indicated codes.\n\n    organization: If \"PUBLIC\" or None, the information in this\n    EntityProductsEntry is public knowledge. Otherwise, it is private to the\n    indicated organization.\n\n    normalized_products: 2, 4, or 6-digit HS codes associated with this relationship."
       },
+      "EntityReferences": {
+        "properties": {
+          "flags": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Flags"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Information about flags found for an entity"
+          },
+          "relationships": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Relationships"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Information about relationships for an entity"
+          }
+        },
+        "type": "object",
+        "title": "EntityReferences"
+      },
       "EntitySearchResult": {
         "properties": {
           "id": {
@@ -9949,7 +10393,7 @@
               }
             ],
             "title": "Aliases",
-            "description": "Entity's known aliases."
+            "description": "Alternative names and aliases"
           },
           "jurisdiction": {
             "anyOf": [
@@ -10069,17 +10513,17 @@
             "title": "Callback URL",
             "description": "Registered URL to call when Entity activiy occurs"
           },
-          "references": {
+          "count_inferred_relationships": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/earthstream_services__services__entity__common__search_models__EntityReferences"
+                "$ref": "#/components/schemas/earthstream_services__services__entity__common__entity_dto__EntityGraphCounts"
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Entity References",
-            "description": "flag, relationships, other references to this entity"
+            "title": "Inferred Relationships Count",
+            "description": "The number of inferred relationships in the graph.  Will not be present if the graph counts have not been calculated yet."
           },
           "external_ids": {
             "anyOf": [
@@ -10095,6 +10539,19 @@
             ],
             "title": "External Identifiers",
             "description": "An optional list of external identifiers for an Entity."
+          },
+          "modified_date": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Modified Date",
+            "description": "Last time entity record was modified (timezone-aware UTC)"
           }
         },
         "type": "object",
@@ -10219,40 +10676,9 @@
       "ExternalBulkFlagItem": {
         "properties": {
           "entity_id": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "string",
             "title": "Entity Id",
             "description": "ID of the associated staged entity"
-          },
-          "entity_name": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Entity Name",
-            "description": "Name of the associated staged entity"
-          },
-          "entity_jurisdiction": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Entity Jurisdiction",
-            "description": "Jurisdiction of the entity"
           },
           "flag_type": {
             "type": "string",
@@ -10313,6 +10739,7 @@
         },
         "type": "object",
         "required": [
+          "entity_id",
           "flag_type",
           "flag_subtype",
           "description",
@@ -10894,6 +11321,9 @@
             "description": "List of entities referenced in the paths",
             "example": [
               {
+                "aliases": [
+                  "Company A Inc."
+                ],
                 "id": "645a550a992fba23b295e4e9",
                 "ids": [],
                 "location": {
@@ -10925,14 +11355,6 @@
                     "language": "en",
                     "region": "Region A"
                   }
-                },
-                "metaData": {
-                  "aliases": [
-                    {
-                      "language": "en",
-                      "name": "Company A Inc."
-                    }
-                  ]
                 },
                 "modified": "2025-09-12T00:00:00Z",
                 "name": "Company A",
@@ -11072,6 +11494,179 @@
         "title": "GeoJSONPoint",
         "description": "GeoJson object that matches Google Maps format for \"Point\" types specifically.\n\"Point\" types are most useful for representing precise address lines or locations.\n\nAttributes:\n    type: Defines the kind of GeoJson format.\n\n    coordinates: a list of floats representing ['longitude', 'latitude']"
       },
+      "GetEntityResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "description": "Unique Entity identifier."
+          },
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "The formal or recognized name of the entity."
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description",
+            "description": "Detailed information about the entity's purpose, background, or role."
+          },
+          "primary_role": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Primary Role",
+            "description": "The primary role of the entity (e.g., supplier, grower)"
+          },
+          "aliases": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Aliases",
+            "description": "Alternative names and aliases"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Url",
+            "description": "The official website or online resource associated with the entity."
+          },
+          "jurisdiction": {
+            "type": "string",
+            "title": "Entity Jurisdiction",
+            "description": "ISO 3166 country code of the country where the entity operates or is governed."
+          },
+          "addresses": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Addresses",
+            "description": "The physical or registered addresses of the entity."
+          },
+          "monitor": {
+            "type": "boolean",
+            "title": "Monitor Entity",
+            "description": "If 'true', system events impacting this Entity or any Entity in its supply chain (as defined by the parameters set in Entity.subscription) will generate Notifications. Notifications can be viewed and acknowledged at /notifications endpoints.",
+            "default": false
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At",
+            "description": "Time record was created."
+          },
+          "modified": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Modified",
+            "description": "Last time record was modified."
+          },
+          "region": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Region",
+            "description": "Region code for the Enttiy"
+          },
+          "affiliated_jurisdiction": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Affiliated Jurisdiction",
+            "description": "Supplemental jurisdction information. For example, some Entities may be associate with super-governmental bodies like the United Nations."
+          },
+          "tradeverifyd_score": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tradeverifyd Score",
+            "description": "Entity's Tradeverifyd score. Entities with higher risk for supply chain or compliance issues will have a lower Tradeverifyd score."
+          },
+          "references": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/EntityReferences"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Entity References",
+            "description": "Summary counts of flags, relationships, and other references associated with this entity. Not specific to query."
+          },
+          "count_inferred_relationships": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/earthstream_services__services__entity__common__entity_dto__EntityGraphCounts"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Inferred Relationships Count",
+            "description": "The number of inferred relationships in the graph.  Will not be present if the graph counts have not been calculated yet."
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "jurisdiction",
+          "created_at",
+          "modified"
+        ],
+        "title": "GetEntityResponse",
+        "description": "Response model for entities.\n\n Attributes:\n\n    id: Unique entity identifier.\n\n    name: Entity name.\n\n    description: Detailed information about the entity, covering its purpose,\n    background, or role.\n\n    primary_role: The primary role an entity plays.\n\n    aliases: Additional aliases that are associated with the entity.\n\n    url: The official website or a relevant online resource associated with the\n    entity.\n\n    jurisdiction: The country the entity is associated with.\n\n    addresses: The physical or registered addresses of the entity.\n\n    monitor: A boolean indicating if this entity's events will generate notifications.\n\n    created_at: Time the entity record was created.\n\n    modified: Time the record was last modified.\n\n    region: Entity's region code.\n\n    affiliated_jurisdiction: Supplemental jurisdiction information.\n\n    tradeverifyd_score: Computed Tradeverifyd score for the entity.\n\n    references: Summary counts of direct entity relationships and flags.\n\n    count_inferred_relationships: Optional value for number of inferred relationships in the entity graph, if already calculated."
+      },
       "GetRelationshipsResponse": {
         "properties": {
           "entity": {
@@ -11089,7 +11684,7 @@
           },
           "entity_graph_counts": {
             "items": {
-              "$ref": "#/components/schemas/EntityGraphCounts"
+              "$ref": "#/components/schemas/app__schemas__metadata__EntityGraphCounts"
             },
             "type": "array",
             "title": "Entity Graph Counts",
@@ -11499,6 +12094,20 @@
                 "type": "null"
               }
             ]
+          },
+          "aliases": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Aliases"
           },
           "affiliated_jurisdiction": {
             "anyOf": [
@@ -12438,7 +13047,7 @@
           },
           "aliases": {
             "items": {
-              "$ref": "#/components/schemas/Alias"
+              "type": "string"
             },
             "type": "array",
             "title": "Aliases",
@@ -12717,6 +13326,39 @@
         },
         "type": "object",
         "title": "RelationshipCount"
+      },
+      "Relationships": {
+        "properties": {
+          "total": {
+            "type": "integer",
+            "title": "The number of relationships the entity is linked with",
+            "default": 0
+          },
+          "from_relationships": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/RelationshipCount"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "\n            The relationships where the given entity is on the 'from' side.\n            These relationships are considered 'outbound' from the entity.\n        "
+          },
+          "to_relationships": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/RelationshipCount"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "\n            The relationships where the given entity is on the 'to' side.\n            These relationships are considered 'inbound' to the entity.\n        "
+          }
+        },
+        "type": "object",
+        "title": "Relationships"
       },
       "ReportDetailResponse": {
         "properties": {
@@ -13236,17 +13878,6 @@
         ],
         "title": "RiskEventSource",
         "description": "Reference to a webpage (usually a journalistic article) that reports and/or\ndescribes the RiskEvent.\n\nRiskEvents gleaned from (e.g.) uploaded text documents have a different\nsource type than RiskEvents found in web articles.\n\nAttributes:\n    type: The kind of source.\n\n    url: Web address of the source.\n\n    publication_date: Optional date when the source was published."
-      },
-      "RiskEvents": {
-        "properties": {
-          "total": {
-            "type": "integer",
-            "title": "The number of risk events found on an entity.",
-            "default": 0
-          }
-        },
-        "type": "object",
-        "title": "RiskEvents"
       },
       "ShipmentDetailResponse": {
         "properties": {
@@ -14986,6 +15617,45 @@
         "title": "Pagination",
         "description": "Using to return paging information to the client\ncurrent_page: the current page of data\ntotal_pages: the total number of pages\ntotal_records: the number of records found\npage_size: the current page size"
       },
+      "app__schemas__metadata__EntityGraphCounts": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "description": "Unique Entity identifier."
+          },
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "The formal or recognized name of the entity."
+          },
+          "child_count": {
+            "type": "integer",
+            "title": "Child Count",
+            "description": "The number of distinct related entities begining with the given entity.",
+            "default": 1
+          },
+          "relationship_count": {
+            "type": "integer",
+            "title": "Relationship Count",
+            "description": "The number of total relationships begining with the given entity.",
+            "default": 1
+          },
+          "flag_count": {
+            "type": "integer",
+            "title": "Flag Count",
+            "description": "The number of flags found in the entities relationships.",
+            "default": 0
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name"
+        ],
+        "title": "EntityGraphCounts",
+        "description": "The response model delivering a list of entities and their respective graph counts\nwith a given default depth."
+      },
       "app__schemas__metadata__Identifier": {
         "properties": {
           "id": {
@@ -15157,138 +15827,27 @@
         "title": "CBPRequest",
         "description": "CBP Request information (shared schema for both public and internal APIs)"
       },
-      "earthstream_services__services__entity__common__entity_dto__EntityReferences": {
+      "earthstream_services__services__entity__common__entity_dto__EntityGraphCounts": {
         "properties": {
-          "flags": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/Flags"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Information about flags found for an entity"
-          },
-          "relationships": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/earthstream_services__services__entity__common__entity_dto__Relationships"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Information about relationships for an entity"
-          }
-        },
-        "type": "object",
-        "title": "EntityReferences"
-      },
-      "earthstream_services__services__entity__common__entity_dto__Relationships": {
-        "properties": {
-          "total": {
+          "depth": {
             "type": "integer",
-            "title": "The number of relationships the entity is linked with",
+            "title": "The depth of the graph traversal",
+            "default": 3
+          },
+          "value": {
+            "type": "integer",
+            "title": "The total number of relationships in the graph",
             "default": 0
           },
-          "from_relationships": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/RelationshipCount"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "\n            The relationships where the given entity is on the 'from' side.  \n            These relationships are considered 'outbound' from the entity.  \n        "
-          },
-          "to_relationships": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/RelationshipCount"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "\n            The relationships where the given entity is on the 'to' side.  \n            These relationships are considered 'inbound' to the entity.  \n        "
+          "last_updated": {
+            "type": "string",
+            "format": "date-time",
+            "title": "The last time the graph counts were updated",
+            "default": "2025-10-16T19:04:04.172082Z"
           }
         },
         "type": "object",
-        "title": "Relationships"
-      },
-      "earthstream_services__services__entity__common__search_models__EntityReferences": {
-        "properties": {
-          "flags": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/Flags"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Information about flags found for an entity"
-          },
-          "relationships": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/earthstream_services__services__entity__common__search_models__Relationships"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Information about relationships for an entity"
-          },
-          "risk_events": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/RiskEvents"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Information about risk events for an entity"
-          }
-        },
-        "type": "object",
-        "title": "EntityReferences"
-      },
-      "earthstream_services__services__entity__common__search_models__Relationships": {
-        "properties": {
-          "total": {
-            "type": "integer",
-            "title": "The number of relationships the entity is linked with",
-            "default": 0
-          },
-          "from_relationships": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/RelationshipCount"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "The relationships where the given entity in on the from side"
-          },
-          "to_relationships": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/RelationshipCount"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "The relationships where the given entity in on the to side"
-          }
-        },
-        "type": "object",
-        "title": "Relationships"
+        "title": "EntityGraphCounts"
       },
       "earthstream_services__services__shipment__common__models__Pagination": {
         "properties": {
