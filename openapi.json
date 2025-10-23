@@ -140,6 +140,23 @@
                         "primary_role": "manufacturer",
                         "url": "https://globalmanufacturingcorp.example",
                         "monitor": true,
+                        "references": {
+                          "flags": {
+                            "total": 2
+                          },
+                          "relationships": {
+                            "total": 15,
+                            "from_relationships": {
+                              "count": 8
+                            },
+                            "to_relationships": {
+                              "count": 7
+                            }
+                          },
+                          "risk_events": {
+                            "total": 1
+                          }
+                        },
                         "external_ids": [
                           {
                             "id": "US-12345678-901",
@@ -167,6 +184,17 @@
                         "flagged": false,
                         "description": "Manufacturing solutions provider",
                         "primary_role": "supplier",
+                        "references": {
+                          "flags": {
+                            "total": 0
+                          },
+                          "relationships": {
+                            "total": 3
+                          },
+                          "risk_events": {
+                            "total": 0
+                          }
+                        },
                         "count_inferred_relationships": {
                           "depth": 3,
                           "value": 3,
@@ -194,6 +222,17 @@
                         "description": "Electronics components supplier with compliance concerns",
                         "primary_role": "supplier",
                         "monitor": true,
+                        "references": {
+                          "flags": {
+                            "total": 3
+                          },
+                          "relationships": {
+                            "total": 12
+                          },
+                          "risk_events": {
+                            "total": 2
+                          }
+                        },
                         "modified_date": "2024-10-18T16:45:00Z"
                       }
                     ]
@@ -216,6 +255,17 @@
                         "description": "High-precision manufacturing and engineering services",
                         "primary_role": "manufacturer",
                         "url": "https://great-engineering-example.de",
+                        "references": {
+                          "flags": {
+                            "total": 0
+                          },
+                          "relationships": {
+                            "total": 8
+                          },
+                          "risk_events": {
+                            "total": 0
+                          }
+                        },
                         "external_ids": [
                           {
                             "id": "HRB123456",
@@ -401,6 +451,23 @@
                         "url": "https://contoso.example",
                         "monitor": true,
                         "auto_research": true,
+                        "references": {
+                          "flags": {
+                            "total": 0
+                          },
+                          "relationships": {
+                            "total": 247,
+                            "from_relationships": {
+                              "count": 156
+                            },
+                            "to_relationships": {
+                              "count": 91
+                            }
+                          },
+                          "risk_events": {
+                            "total": 0
+                          }
+                        },
                         "external_ids": [
                           {
                             "id": "32019387069",
@@ -446,6 +513,17 @@
                         "primary_role": "manufacturer",
                         "url": "https://contoso.example",
                         "monitor": true,
+                        "references": {
+                          "flags": {
+                            "total": 0
+                          },
+                          "relationships": {
+                            "total": 189
+                          },
+                          "risk_events": {
+                            "total": 0
+                          }
+                        },
                         "external_ids": [
                           {
                             "id": "06-1232893",
@@ -481,6 +559,23 @@
                         "primary_role": "manufacturer",
                         "url": "https://acme.example",
                         "monitor": true,
+                        "references": {
+                          "flags": {
+                            "total": 0
+                          },
+                          "relationships": {
+                            "total": 412,
+                            "from_relationships": {
+                              "count": 298
+                            },
+                            "to_relationships": {
+                              "count": 114
+                            }
+                          },
+                          "risk_events": {
+                            "total": 0
+                          }
+                        },
                         "external_ids": [
                           {
                             "id": "US-7200001008846",
@@ -516,6 +611,17 @@
                         "primary_role": "trader",
                         "monitor": true,
                         "auto_research": false,
+                        "references": {
+                          "flags": {
+                            "total": 5
+                          },
+                          "relationships": {
+                            "total": 23
+                          },
+                          "risk_events": {
+                            "total": 3
+                          }
+                        },
                         "external_ids": [
                           {
                             "id": "RU-1027700132195",
@@ -10230,7 +10336,7 @@
           "references": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/EntityReferences"
+                "$ref": "#/components/schemas/earthstream_services__services__entity__common__entity_dto__EntityReferences"
               },
               {
                 "type": "null"
@@ -10339,34 +10445,6 @@
         ],
         "title": "EntityProductsEntry",
         "description": "Incoming or outgoing HS codes for the entity, grouped by organization.\n\nThese entries are populated at regular intervals by an asynchronous\naggregation, and may be stale.\n\nAttributes:\n    direction: Whether the parent entity is shipper or consignee of indicated codes.\n\n    organization: If \"PUBLIC\" or None, the information in this\n    EntityProductsEntry is public knowledge. Otherwise, it is private to the\n    indicated organization.\n\n    normalized_products: 2, 4, or 6-digit HS codes associated with this relationship."
-      },
-      "EntityReferences": {
-        "properties": {
-          "flags": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/Flags"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Information about flags found for an entity"
-          },
-          "relationships": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/Relationships"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Information about relationships for an entity"
-          }
-        },
-        "type": "object",
-        "title": "EntityReferences"
       },
       "EntitySearchResult": {
         "properties": {
@@ -10512,6 +10590,18 @@
             ],
             "title": "Callback URL",
             "description": "Registered URL to call when Entity activiy occurs"
+          },
+          "references": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/earthstream_services__services__entity__common__search_models__EntityReferences"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Entity References",
+            "description": "flag, relationships, other references to this entity"
           },
           "count_inferred_relationships": {
             "anyOf": [
@@ -11634,7 +11724,7 @@
           "references": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/EntityReferences"
+                "$ref": "#/components/schemas/earthstream_services__services__entity__common__entity_dto__EntityReferences"
               },
               {
                 "type": "null"
@@ -13327,39 +13417,6 @@
         "type": "object",
         "title": "RelationshipCount"
       },
-      "Relationships": {
-        "properties": {
-          "total": {
-            "type": "integer",
-            "title": "The number of relationships the entity is linked with",
-            "default": 0
-          },
-          "from_relationships": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/RelationshipCount"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "\n            The relationships where the given entity is on the 'from' side.\n            These relationships are considered 'outbound' from the entity.\n        "
-          },
-          "to_relationships": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/RelationshipCount"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "\n            The relationships where the given entity is on the 'to' side.\n            These relationships are considered 'inbound' to the entity.\n        "
-          }
-        },
-        "type": "object",
-        "title": "Relationships"
-      },
       "ReportDetailResponse": {
         "properties": {
           "id": {
@@ -13878,6 +13935,17 @@
         ],
         "title": "RiskEventSource",
         "description": "Reference to a webpage (usually a journalistic article) that reports and/or\ndescribes the RiskEvent.\n\nRiskEvents gleaned from (e.g.) uploaded text documents have a different\nsource type than RiskEvents found in web articles.\n\nAttributes:\n    type: The kind of source.\n\n    url: Web address of the source.\n\n    publication_date: Optional date when the source was published."
+      },
+      "RiskEvents": {
+        "properties": {
+          "total": {
+            "type": "integer",
+            "title": "The number of risk events found on an entity.",
+            "default": 0
+          }
+        },
+        "type": "object",
+        "title": "RiskEvents"
       },
       "ShipmentDetailResponse": {
         "properties": {
@@ -15843,11 +15911,144 @@
             "type": "string",
             "format": "date-time",
             "title": "The last time the graph counts were updated",
-            "default": "2025-10-16T19:04:04.172082Z"
+            "default": "2025-10-23T19:18:15.919687Z"
           }
         },
         "type": "object",
         "title": "EntityGraphCounts"
+      },
+      "earthstream_services__services__entity__common__entity_dto__EntityReferences": {
+        "properties": {
+          "flags": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Flags"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Information about flags found for an entity"
+          },
+          "relationships": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/earthstream_services__services__entity__common__entity_dto__Relationships"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Information about relationships for an entity"
+          }
+        },
+        "type": "object",
+        "title": "EntityReferences"
+      },
+      "earthstream_services__services__entity__common__entity_dto__Relationships": {
+        "properties": {
+          "total": {
+            "type": "integer",
+            "title": "The number of relationships the entity is linked with",
+            "default": 0
+          },
+          "from_relationships": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/RelationshipCount"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "\n            The relationships where the given entity is on the 'from' side.\n            These relationships are considered 'outbound' from the entity.\n        "
+          },
+          "to_relationships": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/RelationshipCount"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "\n            The relationships where the given entity is on the 'to' side.\n            These relationships are considered 'inbound' to the entity.\n        "
+          }
+        },
+        "type": "object",
+        "title": "Relationships"
+      },
+      "earthstream_services__services__entity__common__search_models__EntityReferences": {
+        "properties": {
+          "flags": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Flags"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Information about flags found for an entity"
+          },
+          "relationships": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/earthstream_services__services__entity__common__search_models__Relationships"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Information about relationships for an entity"
+          },
+          "risk_events": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/RiskEvents"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Information about risk events for an entity"
+          }
+        },
+        "type": "object",
+        "title": "EntityReferences"
+      },
+      "earthstream_services__services__entity__common__search_models__Relationships": {
+        "properties": {
+          "total": {
+            "type": "integer",
+            "title": "The number of relationships the entity is linked with",
+            "default": 0
+          },
+          "from_relationships": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/RelationshipCount"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "The relationships where the given entity in on the from side"
+          },
+          "to_relationships": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/RelationshipCount"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "The relationships where the given entity in on the to side"
+          }
+        },
+        "type": "object",
+        "title": "Relationships"
       },
       "earthstream_services__services__shipment__common__models__Pagination": {
         "properties": {
