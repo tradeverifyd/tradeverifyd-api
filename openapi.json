@@ -1395,6 +1395,19 @@
             "description": "Number of relationships to return per page"
           },
           {
+            "name": "include_affiliates",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "description": "Set True to preserve affiliate relationships when filtering by HS codes. When True, affiliate relationships will be included in the graph even if they don't match the specified HS codes.",
+              "default": false,
+              "title": "Include Affiliates",
+              "type": "boolean",
+              "nullable": true
+            },
+            "description": "Set True to preserve affiliate relationships when filtering by HS codes. When True, affiliate relationships will be included in the graph even if they don't match the specified HS codes."
+          },
+          {
             "name": "direction",
             "in": "query",
             "required": false,
@@ -1643,6 +1656,21 @@
               }
             }
           },
+          "400": {
+            "description": "Invalid depth",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "invalid_depth": {
+                    "summary": "Invalid depth parameter.",
+                    "value": {
+                      "detail": "Depth must be between 1 and 10."
+                    }
+                  }
+                }
+              }
+            }
+          },
           "422": {
             "description": "Unprocessable Content - invalid parameters",
             "content": {
@@ -1663,6 +1691,22 @@
                           "ctx": {
                             "expected": "'in' or 'out'"
                           }
+                        }
+                      ]
+                    }
+                  },
+                  "invalid_depth_type": {
+                    "summary": "Provided depth must be an integer.",
+                    "value": {
+                      "detail": [
+                        {
+                          "type": "int_parsing",
+                          "loc": [
+                            "query",
+                            "depth"
+                          ],
+                          "msg": "Input should be a valid integer, unable to parse string as an integer",
+                          "input": "three"
                         }
                       ]
                     }
@@ -1787,6 +1831,140 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/relationship-types": {
+      "get": {
+        "tags": [
+          "Relationships"
+        ],
+        "summary": "Get Relationship Types Detailed",
+        "description": "Get all available relationship types with enhanced metadata.\n\nThis endpoint provides a comprehensive list of all relationship types used in the system\nwith additional metadata including category, display name, and bidirectional flag.\n\n**Categories:**\nRelationship types are organized into two categories:\n- `affiliate`: Affiliate connections including ownership, control, and partnership relationships\n- `trade`: Trade relationships including supply chain, financial, corporate, and other business connections\n\nUse this endpoint to understand the meaning and categorization of relationship types\nthat appear in other API responses such as entity graphs and relationship queries.",
+        "operationId": "get_relationship_types_detailed_relationship_types_get",
+        "responses": {
+          "200": {
+            "description": "List of all available relationship types with enhanced metadata",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/RelationshipTypeDetailResponse"
+                  },
+                  "type": "array",
+                  "title": "Response Get Relationship Types Detailed Relationship Types Get"
+                },
+                "examples": {
+                  "relationship_types": {
+                    "summary": "Example Relationship Types",
+                    "value": [
+                      {
+                        "type": "IS_SUPPLIER_OF",
+                        "display_name": "Is Supplier Of",
+                        "category": "trade",
+                        "description": "An entity provides goods or services to another entity, usually in a commercial context.",
+                        "bidirectional": false
+                      },
+                      {
+                        "type": "IS_AFFILIATE_OF",
+                        "display_name": "Is Affiliate Of",
+                        "category": "affiliate",
+                        "description": "An entity is associated with another, usually through ownership or control.",
+                        "bidirectional": false
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error - contact support",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "internal_error": {
+                    "summary": "Internal server error",
+                    "value": {
+                      "detail": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/relationship-type-categories": {
+      "get": {
+        "tags": [
+          "Relationships"
+        ],
+        "summary": "Get Relationship Type Categories",
+        "description": "Get all relationship type categories with their associated types.\n\nThis endpoint provides a categorized view of all relationship types,\ngrouping them by their business purpose (e.g., ownership, supply chain, financial).\n\nUse this to understand the different categories of relationships and which\nspecific relationship types belong to each category.",
+        "operationId": "get_relationship_type_categories_relationship_type_categories_get",
+        "responses": {
+          "200": {
+            "description": "List of all relationship type categories with their associated types",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RelationshipTypeCategoriesResponse"
+                },
+                "examples": {
+                  "categories": {
+                    "summary": "Example Categories",
+                    "value": {
+                      "categories": [
+                        {
+                          "name": "ownership",
+                          "display_name": "Ownership Relationships",
+                          "description": "Relationships indicating ownership or control between entities",
+                          "relationship_count": 4,
+                          "types": [
+                            "IS_MAJORITY_SHAREHOLDER_OF",
+                            "IS_SUBISIDIARY_OF",
+                            "IS_THE_HOLDING_COMPANY_OF",
+                            "IS_THE_PARENT_COMPANY_OF"
+                          ]
+                        },
+                        {
+                          "name": "supply_chain",
+                          "display_name": "Supply Chain Relationships",
+                          "description": "Relationships in the supply chain including suppliers, manufacturers, and shipping",
+                          "relationship_count": 6,
+                          "types": [
+                            "IS_SUPPLIER_OF",
+                            "IS_LIKELY_SUPPLIER_OF",
+                            "IS_MANUFACTURER_OF",
+                            "IS_A_VENDOR_OF",
+                            "SHIPS_GOODS_TO",
+                            "SHIPS_VIA"
+                          ]
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error - contact support",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "internal_error": {
+                    "summary": "Internal server error",
+                    "value": {
+                      "detail": "Internal server error"
+                    }
+                  }
                 }
               }
             }
@@ -3433,7 +3611,7 @@
           "Flags"
         ],
         "summary": "Get Flags",
-        "description": "Retrieve flags related to a specific entity, with options for recursive\nretrieval and depth control.\n\nThis endpoint is designed to provide a list of flags associated with an\nentity. Flags represent important markers or alerts related to the entity,\nsuch as compliance issues, risk indicators, or other significant\nannotations. The endpoint supports recursive retrieval of flags and allows\nspecifying the depth of retrieval, enabling a comprehensive view of related\nflags.\n\nFlags can be invalidated by external evidence, or no longer apply for time\nreasons to a specific entity.\n\n## Note:\n- `entity_id` MUST be provided.\n- `depth` has no effect if recursive retrieval is not enabled.",
+        "description": "Retrieve flags related to a specific entity.\n\nThis endpoint is designed to provide a list of flags associated with an\nentity. Flags represent important markers or alerts related to the entity,\nsuch as compliance issues, risk indicators, or other significant\nannotations.\n\nFlags can be invalidated by external evidence, or no longer apply for time\nreasons to a specific entity.\n\n## Note:\n- `entity_id` MUST be provided.\n- If interested in viewing flagged affiliates, please use the `Get Entity Graph\nFlagged Relationships` endpoint at\n`/entities/{entity_id}/graph/flagged_relationships`",
         "operationId": "get_flags_flags_get",
         "parameters": [
           {
@@ -3446,33 +3624,6 @@
               "title": "Entity Id"
             },
             "description": "The unique identifier of the entity for which flags are being requested. This parameter is required."
-          },
-          {
-            "name": "recursive",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "description": "If 'true', flags will also be retrieved recursively from entities upstream upstream of the target entity ",
-              "default": false,
-              "title": "Recursive",
-              "type": "boolean",
-              "nullable": true
-            },
-            "description": "If 'true', flags will also be retrieved recursively from entities upstream upstream of the target entity "
-          },
-          {
-            "name": "depth",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "description": "The maximum recursion depth for recursive flag retrieval. If 'recursive' is 'false', this parameter has no effect.",
-              "default": 0,
-              "title": "Depth",
-              "type": "integer",
-              "minimum": 0,
-              "nullable": true
-            },
-            "description": "The maximum recursion depth for recursive flag retrieval. If 'recursive' is 'false', this parameter has no effect."
           }
         ],
         "responses": {
@@ -3488,9 +3639,9 @@
                   "title": "Response Get Flags Flags Get"
                 },
                 "examples": {
-                  "entity_flags_with_depth": {
-                    "summary": "Entity flags with relationship traversal",
-                    "description": "Multiple flags for Example Contoso Inc. and its upstream suppliers, including OFAC sanctions and adverse media flags with depth information.",
+                  "entity_flags": {
+                    "summary": "Entity flags",
+                    "description": "Multiple flags for Example Contoso Inc.",
                     "value": [
                       {
                         "id": "507f1f77bcf86cd799439011",
@@ -3510,11 +3661,7 @@
                             "url": "https://bis.doc.example/index.php/policy-guidance/entity-list",
                             "title": "Export Compliance Review 2024"
                           }
-                        ],
-                        "depth": {
-                          "depth": 0,
-                          "direction": "entry"
-                        }
+                        ]
                       },
                       {
                         "id": "507f1f77bcf86cd799439014",
@@ -3531,11 +3678,7 @@
                           {
                             "url": "https://news.example/acme-labor-violations-2024"
                           }
-                        ],
-                        "depth": {
-                          "depth": 1,
-                          "direction": "upstream"
-                        }
+                        ]
                       }
                     ]
                   },
@@ -8781,32 +8924,6 @@
         "title": "DataStatus",
         "description": "Supoorts enhancing a class with status information.\n\nAttributes:\n    state: the state value: invalid, suspected, or confirmed. Defaults to\n    suspected.\n    confidence: the level of confidence in the state: almost no chance, very unlikely,\n    unlikely, roughly even chance, likely, very likely, almost certain.\n    sources: a list of sources supporting the state and confidence level."
       },
-      "DepthInfo": {
-        "properties": {
-          "depth": {
-            "type": "integer",
-            "title": "Depth",
-            "description": "The depth of the flag in the relationship."
-          },
-          "direction": {
-            "type": "string",
-            "enum": [
-              "upstream",
-              "downstream",
-              "entry"
-            ],
-            "title": "Direction",
-            "description": "The direction of the flag in the relationship."
-          }
-        },
-        "type": "object",
-        "required": [
-          "depth",
-          "direction"
-        ],
-        "title": "DepthInfo",
-        "description": "Represents depth information for recursive flag retrieval, indicating if the relationship is upstream or downstream."
-      },
       "DisplayFlag": {
         "properties": {
           "created_at": {
@@ -9055,12 +9172,6 @@
             "title": "Flag Subtype",
             "description": "The human-readable subtype of the flag.",
             "type": "string",
-            "nullable": true
-          },
-          "depth": {
-            "title": "Depth",
-            "description": "Optional depth information for recursive flag retrieval, indicating if the relationship is upstream or downstream.",
-            "$ref": "#/components/schemas/DepthInfo",
             "nullable": true
           },
           "flag_polarity": {
@@ -9565,6 +9676,18 @@
             "type": "boolean",
             "title": "Flagged",
             "description": "Whether or not the Entity has active Flags."
+          },
+          "has_positive_flags": {
+            "type": "boolean",
+            "title": "Has Positive Flags",
+            "description": "Whether the Entity has any positive/compliant flags.",
+            "default": false
+          },
+          "has_negative_flags": {
+            "type": "boolean",
+            "title": "Has Negative Flags",
+            "description": "Whether the Entity has any negative/risk flags.",
+            "default": false
           },
           "description": {
             "title": "Entity Description",
@@ -11217,6 +11340,7 @@
           "is_privileged": {
             "type": "boolean",
             "title": "Is Privileged",
+            "description": "Indicates if this relationship requires privileged access. Access to privileged relationships is governed by data contracts and customer contracts.",
             "default": false
           }
         },
@@ -11494,8 +11618,9 @@
             "title": "Entity Id"
           },
           "entity_jurisdiction": {
+            "title": "Entity Jurisdiction",
             "type": "string",
-            "title": "Entity Jurisdiction"
+            "nullable": true
           },
           "type": {
             "type": "string",
@@ -11541,7 +11666,6 @@
         "required": [
           "id",
           "entity_id",
-          "entity_jurisdiction",
           "type",
           "subtype",
           "modified"
@@ -11669,6 +11793,104 @@
         },
         "type": "object",
         "title": "RelationshipCount"
+      },
+      "RelationshipTypeCategoriesResponse": {
+        "properties": {
+          "categories": {
+            "items": {
+              "$ref": "#/components/schemas/RelationshipTypeCategory"
+            },
+            "type": "array",
+            "title": "Categories"
+          }
+        },
+        "type": "object",
+        "required": [
+          "categories"
+        ],
+        "title": "RelationshipTypeCategoriesResponse",
+        "description": "Response model for relationship type categories endpoint.\n\nAttributes:\n    categories: List of relationship type categories."
+      },
+      "RelationshipTypeCategory": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "The category name"
+          },
+          "display_name": {
+            "type": "string",
+            "title": "Display Name",
+            "description": "Human-readable name for the category"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description",
+            "description": "Description of what this category represents"
+          },
+          "relationship_count": {
+            "type": "integer",
+            "title": "Relationship Count",
+            "description": "Number of relationship types in this category"
+          },
+          "types": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Types",
+            "description": "List of relationship type names in this category"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "display_name",
+          "description",
+          "relationship_count",
+          "types"
+        ],
+        "title": "RelationshipTypeCategory",
+        "description": "Response model for relationship type categories.\n\nAttributes:\n    name: The category name (e.g., ownership, supply_chain).\n    display_name: Human-readable name for the category.\n    description: Description of what this category represents.\n    relationship_count: Number of relationship types in this category.\n    types: List of relationship type names in this category."
+      },
+      "RelationshipTypeDetailResponse": {
+        "properties": {
+          "type": {
+            "type": "string",
+            "title": "Type",
+            "description": "The type of relationship"
+          },
+          "display_name": {
+            "type": "string",
+            "title": "Display Name",
+            "description": "Human-readable name for the relationship type"
+          },
+          "category": {
+            "type": "string",
+            "title": "Category",
+            "description": "The category this relationship belongs to"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description",
+            "description": "Description of what this relationship type means"
+          },
+          "bidirectional": {
+            "type": "boolean",
+            "title": "Bidirectional",
+            "description": "Whether this relationship type is bidirectional"
+          }
+        },
+        "type": "object",
+        "required": [
+          "type",
+          "display_name",
+          "category",
+          "description",
+          "bidirectional"
+        ],
+        "title": "RelationshipTypeDetailResponse",
+        "description": "Enhanced response model for relationship types with additional metadata.\n\nAttributes:\n    type: The type of relationship (e.g., IS_SUPPLIER_OF, DIRECTLY_CONSOLIDATES).\n    display_name: Human-readable name for the relationship type.\n    category: The category this relationship belongs to (e.g., supply_chain, ownership).\n    description: A description of what this relationship type means.\n    bidirectional: Whether this relationship type is bidirectional."
       },
       "RelationshipTypeResponse": {
         "properties": {
@@ -13633,7 +13855,7 @@
             "type": "string",
             "format": "date-time",
             "title": "The last time the graph counts were updated",
-            "default": "2025-10-29T18:27:06.574560Z"
+            "default": "2025-11-13T22:16:30.212120Z"
           }
         },
         "type": "object",
