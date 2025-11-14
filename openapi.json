@@ -13855,7 +13855,7 @@
             "type": "string",
             "format": "date-time",
             "title": "The last time the graph counts were updated",
-            "default": "2025-11-13T22:16:30.212120Z"
+            "default": "2025-11-14T18:45:43.024347Z"
           }
         },
         "type": "object",
