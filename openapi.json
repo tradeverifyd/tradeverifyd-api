@@ -1386,13 +1386,15 @@
             "in": "query",
             "required": false,
             "schema": {
-              "description": "Number of relationships to return per page",
-              "default": 1000,
+              "description": "Number of relationships to return per page (max 100)",
+              "default": 100,
               "title": "Page Size",
               "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
               "nullable": true
             },
-            "description": "Number of relationships to return per page"
+            "description": "Number of relationships to return per page (max 100)"
           },
           {
             "name": "include_affiliates",
@@ -1739,7 +1741,7 @@
           "Entity"
         ],
         "summary": "Get Entity Graph Flagged Relationships",
-        "description": "Get flagged relationships for an entity with full entity, relationship, and flag details.\n\nThis endpoint returns the shortest paths between the specified entity and all\nupstream flagged entities that pass through the provided HS codes. The response\nincludes complete details for all entities, relationships, and flags referenced\nin the paths.\n\nArgs:\n    entity_id: The ID of the entity to use as the starting point for relationship search\n    hs_codes: List of HS codes that paths must pass through to be considered\n    include_flags: Optional list of flag types to filter by (if not provided, all flag types are considered)\n    paging: Pagination parameters\n\nReturns:\n    FlaggedRelationshipsResponse: Contains entities, relationships, and flags with all ObjectIds serialized as strings\n    with all ObjectIds serialized as strings",
+        "description": "Get flagged relationships for an entity with full entity, relationship, and flag details.\n\nThis endpoint returns the shortest paths between the specified entity and all\nupstream flagged entities that pass through the provided HS codes. The response\nincludes complete details for all entities, relationships, and flags referenced\nin the paths.\n\nArgs:\n- entity_id: The ID of the entity to use as the starting point for relationship search\n- hs_codes: List of HS codes that paths must pass through to be considered\n- include_flags: Optional list of flag types to filter by (if not provided, all flag types are considered)\n- include_affiliates: When True, paths connected by affiliate relationships are included\n- paging: Pagination parameters\n\nReturns:\n- FlaggedRelationshipsResponse: Contains entities, relationships, and flags with all\nObjectIds serialized as strings with all ObjectIds serialized as strings",
         "operationId": "get_entity_graph_flagged_relationships_entities__entity_id__graph_flagged_relationships_get",
         "parameters": [
           {
@@ -1775,6 +1777,19 @@
               },
               "nullable": true
             }
+          },
+          {
+            "name": "include_affiliates",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "description": "Set True to preserve affiliate relationships when filtering by HS codes. When True, affiliate relationships will be included in the graph even if they don't match the specified HS codes.",
+              "default": false,
+              "title": "Include Affiliates",
+              "type": "boolean",
+              "nullable": true
+            },
+            "description": "Set True to preserve affiliate relationships when filtering by HS codes. When True, affiliate relationships will be included in the graph even if they don't match the specified HS codes."
           },
           {
             "name": "page",
@@ -13855,7 +13870,7 @@
             "type": "string",
             "format": "date-time",
             "title": "The last time the graph counts were updated",
-            "default": "2025-11-14T18:45:43.024347Z"
+            "default": "2025-12-10T19:15:35.201030Z"
           }
         },
         "type": "object",
