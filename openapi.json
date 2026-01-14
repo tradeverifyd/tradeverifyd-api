@@ -2047,170 +2047,6 @@
         }
       }
     },
-    "/v1/relationships/{entity_id}": {
-      "get": {
-        "tags": [
-          "Relationships"
-        ],
-        "summary": "Get Entity Relationships",
-        "description": "## **DEPRECATED**: This endpoint will be unavailable after December 31, 2025. Use of this endpoint may result in 500 errors or browser issues. Please use the Get Entity Graph endpoint `/entities/{entity_id}/graph` instead.\n\nRetrieve a graph of relationships for a single Entity.\n\nThis endpoint provides information about the relationships of an Entity,\nsuch as partnerships, affiliations, or any other defined connections. The\nconnected Entities in the returned graph include added context for each\nEntity, such as active Flags and Risk Events.\n\nIf the desired output is to return a graph of relationships with at least\none flag along the path with complete entity, relationship, and flag details\nfiltered by HS codes, use the flagged_relationships endpoint instead.",
-        "operationId": "get_entity_relationships_relationships__entity_id__get",
-        "parameters": [
-          {
-            "name": "entity_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "description": "Id of the Entity to use as the starting node for graph retrieval.",
-              "title": "Entity Id"
-            },
-            "description": "Id of the Entity to use as the starting node for graph retrieval."
-          },
-          {
-            "name": "hs_codes",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "description": "Filter by 2, 4, or 6-digit Harmonized System (HS) codes. In direct API calls to send multiple hs_codes repeat the parameter: ?hs_codes=12&hs_codes=34&hs_codes=5678. A less-specific HS code will match more-specific codes with the same prefix. (e.g., '12' matches '1234' and '1256'). When provided, relationships involving ANY of these product codes are included. If omitted, all relationships are returned.Use with 'filter_strategy' to control how filtering is applied in the graph.",
-              "title": "Hs Codes",
-              "type": "array",
-              "items": {
-                "type": "string"
-              },
-              "nullable": true
-            },
-            "description": "Filter by 2, 4, or 6-digit Harmonized System (HS) codes. In direct API calls to send multiple hs_codes repeat the parameter: ?hs_codes=12&hs_codes=34&hs_codes=5678. A less-specific HS code will match more-specific codes with the same prefix. (e.g., '12' matches '1234' and '1256'). When provided, relationships involving ANY of these product codes are included. If omitted, all relationships are returned.Use with 'filter_strategy' to control how filtering is applied in the graph."
-          },
-          {
-            "name": "depth",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "description": "Limits how many levels of related relationships the query will explore. For example, a depth of 1 returns only directly related items, while higher values include more distant connections.",
-              "default": 1,
-              "title": "Depth",
-              "type": "integer",
-              "nullable": true
-            },
-            "description": "Limits how many levels of related relationships the query will explore. For example, a depth of 1 returns only directly related items, while higher values include more distant connections."
-          },
-          {
-            "name": "include_outgoing",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "boolean",
-              "description": "When 'false', only incoming relationships for the Entity specified by the user-supplied Entity Id is returned.",
-              "default": true,
-              "title": "Include Outgoing"
-            },
-            "description": "When 'false', only incoming relationships for the Entity specified by the user-supplied Entity Id is returned."
-          },
-          {
-            "name": "filter_strategy",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "enum": [
-                "strict",
-                "lax"
-              ],
-              "type": "string",
-              "description": "If 'hs_codes' are provided and 'filter_strategy' is 'strict', only relationships that match at least 1 of the provided codes will be followed while assembling the graph outward from the entrypoint Entity. If 'filter_strategy' is 'lax', every edge on any path between a matched HS code and the entrypoint is included, as well as every edge that lies beyond a matched HS code while traversing either upstream or downstream from the entrypoint. If no HS codes are provided, this parameter has no effect.",
-              "default": "strict",
-              "title": "Filter Strategy"
-            },
-            "description": "If 'hs_codes' are provided and 'filter_strategy' is 'strict', only relationships that match at least 1 of the provided codes will be followed while assembling the graph outward from the entrypoint Entity. If 'filter_strategy' is 'lax', every edge on any path between a matched HS code and the entrypoint is included, as well as every edge that lies beyond a matched HS code while traversing either upstream or downstream from the entrypoint. If no HS codes are provided, this parameter has no effect."
-          },
-          {
-            "name": "preserve_corporate_relationships",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "boolean",
-              "description": "If 'hs_codes' are set, this parameter will include certain relationship types that describe corporate structures regardless of the HS codes they contain (for example, parent-subsidiary relationships). This is most useful in the context of 'strict' HS code filtering to follow the flow of a particular set of goods without losing information about the corporate structure of Entities involved in the graph.",
-              "default": false,
-              "title": "Preserve Corporate Relationships"
-            },
-            "description": "If 'hs_codes' are set, this parameter will include certain relationship types that describe corporate structures regardless of the HS codes they contain (for example, parent-subsidiary relationships). This is most useful in the context of 'strict' HS code filtering to follow the flow of a particular set of goods without losing information about the corporate structure of Entities involved in the graph."
-          },
-          {
-            "name": "global_root_id",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "description": "Note: to use this paramter, 'include_outgoing' must be 'false'.\n\nIf provided, the Entity with id matching 'global_root_id' will be set as the 'root' of the returned graph, and all outgoing relationships from the entrypoint Entity (set by parameter 'entity_id') to the Entity specified by 'global_root_id' will be included in the response. Filter parameters are still honored for relationships upstream of the entrypoint Entity.",
-              "title": "Global Root Id",
-              "type": "string",
-              "nullable": true
-            },
-            "description": "Note: to use this paramter, 'include_outgoing' must be 'false'.\n\nIf provided, the Entity with id matching 'global_root_id' will be set as the 'root' of the returned graph, and all outgoing relationships from the entrypoint Entity (set by parameter 'entity_id') to the Entity specified by 'global_root_id' will be included in the response. Filter parameters are still honored for relationships upstream of the entrypoint Entity."
-          },
-          {
-            "name": "include_counts",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "boolean",
-              "description": "If true, an entity counts graph counts section is include in the result setNOTE: using this option will significanly increase response times on large graphs.When retrieving graphs with over 1000 nodes, the counts are not returned.",
-              "default": false,
-              "title": "Include Counts"
-            },
-            "description": "If true, an entity counts graph counts section is include in the result setNOTE: using this option will significanly increase response times on large graphs.When retrieving graphs with over 1000 nodes, the counts are not returned."
-          },
-          {
-            "name": "only_supplier_relationships",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "boolean",
-              "description": "When true, this builds a graph using an alternative mechanismThis will increase performance, however it maybe not be an exact 1 to 1 match with the previous graph in all scenariosThis graph will ignore the include_outgoing flag.Only incoming relationships are included.",
-              "default": false,
-              "title": "Only Supplier Relationships"
-            },
-            "description": "When true, this builds a graph using an alternative mechanismThis will increase performance, however it maybe not be an exact 1 to 1 match with the previous graph in all scenariosThis graph will ignore the include_outgoing flag.Only incoming relationships are included."
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetRelationshipsResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal server error - contact support",
-            "content": {
-              "application/json": {
-                "examples": {
-                  "internal_error": {
-                    "summary": "Internal server error",
-                    "value": {
-                      "detail": "Internal server error"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/v1/risk_events/{event_id}": {
       "get": {
         "tags": [
@@ -2924,14 +2760,29 @@
             }
           },
           "409": {
-            "description": "Conflict",
+            "description": "Conflict - A matching report already exists",
             "content": {
               "application/json": {
                 "examples": {
-                  "duplicate_report": {
-                    "summary": "Duplicate Report",
+                  "duplicate_tasa_report": {
+                    "summary": "Duplicate TASA Report",
+                    "description": "A TASA report for this entity is already in progress or exists",
                     "value": {
-                      "detail": "This report is already in progress. Please wait until it completes."
+                      "detail": "A report already exists for this request.",
+                      "report_id": "123e4567-e89b-12d3-a456-426614174000",
+                      "entity_id": "507f1f77bcf86cd799439011",
+                      "report_type": "tasa",
+                      "status": "processing"
+                    }
+                  },
+                  "duplicate_cgr_report": {
+                    "summary": "Duplicate CGR Report",
+                    "description": "A CGR report for this fileset already exists",
+                    "value": {
+                      "detail": "A report already exists for this request.",
+                      "report_id": "456e4567-e89b-12d3-a456-426614174111",
+                      "report_type": "cgr",
+                      "status": "complete"
                     }
                   }
                 }
@@ -7828,24 +7679,29 @@
         "title": "AbridgedRelationship",
         "description": "Minimum EntityRelationship data needed by Tradeverifyd Portal graphs"
       },
-      "Alias": {
+      "Address": {
         "properties": {
-          "name": {
+          "address": {
             "type": "string",
-            "title": "Name"
+            "title": "Address"
           },
-          "language": {
-            "title": "Language",
+          "problematic": {
+            "type": "boolean",
+            "title": "Problematic",
+            "default": false
+          },
+          "problem_region": {
+            "title": "Problem Region",
             "type": "string",
             "nullable": true
           }
         },
         "type": "object",
         "required": [
-          "name"
+          "address"
         ],
-        "title": "Alias",
-        "description": "Alternative name for an entity"
+        "title": "Address",
+        "description": "Information about an Entity's Address."
       },
       "BaseRiskEvent": {
         "properties": {
@@ -8162,70 +8018,6 @@
         "title": "BaseRiskEvent",
         "description": "Represents an Event which happens in the real world that is likely to\ndisrupt economic activity for affected entities.\n\nAttributes:\n    id: Database id of the record, corresponds to MongoDB '_id'.\n\n    title: The title or a brief description of the event. This should\n    capture the essence of what the event is about.\n\n    summary: A more detailed summary or description of the event. This\n    provides additional context and information about the event.\n\n    sources: References that report and/or describe the event.\n\n    expires: Time after which the RiskEvent is no longer 'in-effect'.\n\n    type: Identifies the type of the event. The event type is the main\n    driver of event processing, e.g. when it expires, how it propagates to\n    entities, etc.\n\n    start_date: Time the event began\n\n    end_date: Time the event ended\n\n    last_propagation: Last time this event propagated to entities. Will be\n    'None' if it has never been propagated.\n\n    last_notification: Last time notifications for this event were\n    published. Will be 'None' if no notifications have been generated.\n\n    hidden: A 'hidden' RiskEvent has been un-propagated from all Entities so\n    that it is no longer affecting any scores, and should not be displayed\n    to any users. This field is temporary and will be displaced by\n    'review_status' once accompanying features for 'review_status' are\n    complete.\n\n    review_status: New RiskEvents are created in a 'pending' state. Pending\n    RiskEvents are invisible to end users, and have no impact on Entity\n    scores or other calculations. On human review, a RiskEvent may be\n    either 'approved' or 'denied'. If the RiskEvent is approved, it is\n    propagated to affected Entities, where it will impact Entity risk\n    scoring and other calculations. If denied, a corresponding\n    'RiskEventFeedback' record exists that explains why the RiskEvent is\n    irrelevant or inappropriate. RiskEvents are allowed to transition\n    between 'approved' and 'denied' any number of times, though such\n    transitions should be rare.\n\n    extraction_metadata: LLM vendor, model, and schema used to extract Risk\n    Event information from input text. This information can be used to\n    compare the performance of different prompts and models.\n\n    force_expired: If True, the expiration time set at creation has been\n    manually overridden to 'force' the record to expire.\n\n    original_expiry: If exists and is non-null, contains the expiration time\n    from before the document was force-expired."
       },
-      "BlockAGIResearch": {
-        "properties": {
-          "created_at": {
-            "type": "string",
-            "format": "date-time",
-            "title": "Created At"
-          },
-          "modified": {
-            "type": "string",
-            "format": "date-time",
-            "title": "Modified"
-          },
-          "timestamp": {
-            "type": "string",
-            "format": "date-time",
-            "title": "Timestamp"
-          },
-          "engine": {
-            "type": "string",
-            "title": "Engine"
-          },
-          "version": {
-            "type": "string",
-            "title": "Version"
-          },
-          "results": {
-            "$ref": "#/components/schemas/BlockAGIResults"
-          }
-        },
-        "type": "object",
-        "required": [
-          "timestamp",
-          "engine",
-          "version",
-          "results"
-        ],
-        "title": "BlockAGIResearch",
-        "description": "Detailed entity supply chain information synthesized by LLM"
-      },
-      "BlockAGIResults": {
-        "properties": {
-          "created_at": {
-            "type": "string",
-            "format": "date-time",
-            "title": "Created At"
-          },
-          "modified": {
-            "type": "string",
-            "format": "date-time",
-            "title": "Modified"
-          },
-          "overview": {
-            "title": "Overview",
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "type": "object",
-        "required": [
-          "overview"
-        ],
-        "title": "BlockAGIResults",
-        "description": "Result details from research powered by 'blockagi' engine"
-      },
       "Body_update_shipment_sir_status_shipment_sirs__sir_id__status_post": {
         "properties": {
           "status": {
@@ -8479,51 +8271,6 @@
         ],
         "title": "Coordinate",
         "description": "Latitude and longitude associated with an Entity"
-      },
-      "Coordinates": {
-        "properties": {
-          "latitude": {
-            "title": "Latitude",
-            "type": "number",
-            "nullable": true
-          },
-          "longitude": {
-            "title": "Longitude",
-            "type": "number",
-            "nullable": true
-          }
-        },
-        "type": "object",
-        "title": "Coordinates",
-        "description": "Coordinates information for an entity"
-      },
-      "Corroboration": {
-        "properties": {
-          "by": {
-            "title": "By",
-            "type": "string",
-            "nullable": true
-          },
-          "corroborationLevel": {
-            "title": "Corroborationlevel",
-            "type": "string",
-            "nullable": true
-          },
-          "other": {
-            "title": "Other",
-            "items": {},
-            "type": "array",
-            "nullable": true
-          },
-          "id": {
-            "title": "Id",
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "type": "object",
-        "title": "Corroboration",
-        "description": "Corroboration information for an entity"
       },
       "CreateReportRequest": {
         "properties": {
@@ -8787,32 +8534,6 @@
         "title": "CredentialSchemaListItem",
         "description": "Credential schema list item with just the schema id and title"
       },
-      "Cyber": {
-        "properties": {
-          "associated_urls": {
-            "title": "Associated Urls",
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "nullable": true
-          },
-          "key_materials": {
-            "$ref": "#/components/schemas/KeyMaterial"
-          },
-          "gleif_url": {
-            "title": "Gleif Url",
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "type": "object",
-        "required": [
-          "key_materials"
-        ],
-        "title": "Cyber",
-        "description": "Cyber information for an entity"
-      },
       "DSCContentsResponse": {
         "properties": {
           "report_id": {
@@ -8939,173 +8660,6 @@
         "title": "DataStatus",
         "description": "Supoorts enhancing a class with status information.\n\nAttributes:\n    state: the state value: invalid, suspected, or confirmed. Defaults to\n    suspected.\n    confidence: the level of confidence in the state: almost no chance, very unlikely,\n    unlikely, roughly even chance, likely, very likely, almost certain.\n    sources: a list of sources supporting the state and confidence level."
       },
-      "DisplayFlag": {
-        "properties": {
-          "created_at": {
-            "type": "string",
-            "format": "date-time",
-            "title": "Created At"
-          },
-          "modified": {
-            "type": "string",
-            "format": "date-time",
-            "title": "Modified"
-          },
-          "batch": {
-            "title": "Batch",
-            "type": "string",
-            "nullable": true
-          },
-          "_id": {
-            "type": "string",
-            "title": "Id",
-            "default": "None"
-          },
-          "schema_version": {
-            "type": "integer",
-            "title": "Schema Version",
-            "default": 1
-          },
-          "entity_id": {
-            "type": "string",
-            "title": "Entity Id"
-          },
-          "type": {
-            "type": "string",
-            "title": "Type"
-          },
-          "tags": {
-            "title": "Tags",
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "nullable": true
-          },
-          "source": {
-            "title": "Source",
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "nullable": true
-          },
-          "entity_jurisdiction": {
-            "title": "Entity Jurisdiction",
-            "type": "string",
-            "nullable": true
-          },
-          "customer_managed": {
-            "type": "boolean",
-            "title": "Customer Managed",
-            "default": false
-          },
-          "owner_email": {
-            "title": "Owner Email",
-            "type": "string",
-            "nullable": true
-          },
-          "organization": {
-            "title": "Organization",
-            "type": "string",
-            "nullable": true
-          },
-          "deleted": {
-            "type": "boolean",
-            "title": "Deleted",
-            "default": false
-          },
-          "deleted_at": {
-            "title": "Deleted At",
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "deletion_source": {
-            "title": "Deletion Source",
-            "type": "string",
-            "nullable": true
-          },
-          "confidence": {
-            "title": "Confidence",
-            "type": "integer",
-            "nullable": true
-          },
-          "time_start": {
-            "title": "Time Start",
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "time_end": {
-            "title": "Time End",
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "description": {
-            "title": "Description",
-            "type": "string",
-            "nullable": true
-          },
-          "score": {
-            "type": "number",
-            "title": "Score",
-            "default": 0.5
-          },
-          "decay_factor": {
-            "title": "Decay Factor",
-            "default": 1.0,
-            "type": "number",
-            "nullable": true
-          },
-          "decay_version": {
-            "type": "integer",
-            "title": "Decay Version",
-            "default": 1
-          },
-          "penalties": {
-            "title": "Penalties",
-            "items": {
-              "additionalProperties": {
-                "type": "string"
-              },
-              "type": "object"
-            },
-            "type": "array",
-            "nullable": true
-          },
-          "subtype": {
-            "type": "string",
-            "title": "Subtype"
-          },
-          "flag_polarity": {
-            "title": "Flag Polarity",
-            "type": "integer",
-            "nullable": true
-          },
-          "url_sources": {
-            "title": "Url Sources",
-            "description": "Members of 'source' field that are also well-formed URLs. If Flag.source\nhas 1 or more entries, but none are valid URLs, the value of this\ncomputed field will be None.",
-            "readOnly": true,
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "nullable": true
-          }
-        },
-        "additionalProperties": true,
-        "type": "object",
-        "required": [
-          "entity_id",
-          "type",
-          "subtype",
-          "url_sources"
-        ],
-        "title": "DisplayFlag",
-        "description": "A flag that is displayed in the portal. Identical to Flag but with string type and subtype\ninstead of ObjectId type and the addition of polarity."
-      },
       "DisplayFlagResponse": {
         "properties": {
           "id": {
@@ -9206,450 +8760,27 @@
         "title": "DisplayFlagResponse",
         "description": "Response model for flag display information.\n\nExtends the internal flag model to provide comprehensive flag details\nincluding entity context and relationship depth information."
       },
-      "Entity": {
+      "EntityGraphCounts": {
         "properties": {
-          "created_at": {
-            "type": "string",
-            "format": "date-time",
-            "title": "Created At"
-          },
-          "modified": {
-            "type": "string",
-            "format": "date-time",
-            "title": "Modified"
-          },
-          "batch": {
-            "title": "Batch",
-            "type": "string",
-            "nullable": true
-          },
-          "_id": {
-            "type": "string",
-            "title": "Id",
-            "default": "None"
-          },
-          "schema_version": {
+          "depth": {
             "type": "integer",
-            "title": "Schema Version",
-            "default": 1
+            "title": "The depth of the graph traversal",
+            "default": 3
           },
-          "ids": {
-            "title": "Ids",
-            "items": {
-              "$ref": "#/components/schemas/mesur_data_access__tradeverifyd__datamodels__common__Identifier"
-            },
-            "type": "array",
-            "nullable": true
-          },
-          "name": {
-            "type": "string",
-            "title": "Name"
-          },
-          "status": {
-            "title": "Status",
-            "type": "string",
-            "nullable": true
-          },
-          "jurisdiction": {
-            "type": "string",
-            "maxLength": 2,
-            "title": "Jurisdiction"
-          },
-          "type": {
-            "title": "Type",
-            "type": "string",
-            "nullable": true
-          },
-          "url": {
-            "title": "Url",
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "nullable": true
-          },
-          "cyber": {
-            "$ref": "#/components/schemas/Cyber",
-            "nullable": true
-          },
-          "location": {
-            "$ref": "#/components/schemas/Location",
-            "nullable": true
-          },
-          "entity_creation_date": {
-            "title": "Entity Creation Date",
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "registration": {
-            "$ref": "#/components/schemas/Registration",
-            "nullable": true
-          },
-          "research": {
-            "$ref": "#/components/schemas/Research",
-            "nullable": true
-          },
-          "deleted_at": {
-            "title": "Deleted At",
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "deleted": {
-            "type": "boolean",
-            "title": "Deleted",
-            "default": false
-          },
-          "mesur_type": {
-            "type": "string",
-            "enum": [
-              "Company",
-              "Facility",
-              "Farm"
-            ],
-            "title": "Mesur Type",
-            "description": "Describes the type of entity. Being either a legal company or a physical location",
-            "default": "Company"
-          },
-          "tags": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "title": "Tags",
-            "description": "List of tags associated with entity. Can be arbitrary values, possibly generated by a LLM",
-            "default": []
-          },
-          "geo_location": {
-            "title": "Geo Location",
-            "description": "Geographic location of entity",
-            "additionalProperties": true,
-            "type": "object",
-            "nullable": true
-          },
-          "priorData": {
-            "title": "Priordata",
-            "items": {
-              "additionalProperties": true,
-              "type": "object"
-            },
-            "type": "array",
-            "nullable": true
-          },
-          "flags": {
-            "title": "Flags",
-            "items": {
-              "anyOf": [
-                {
-                  "$ref": "#/components/schemas/Flag"
-                },
-                {
-                  "$ref": "#/components/schemas/DisplayFlag"
-                }
-              ]
-            },
-            "type": "array",
-            "nullable": true
-          },
-          "normalized_products": {
-            "title": "Normalized Products",
-            "items": {
-              "$ref": "#/components/schemas/EntityProductsEntry"
-            },
-            "type": "array",
-            "nullable": true
-          },
-          "last_aggregated": {
-            "title": "Last Aggregated",
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "has_incoming_for": {
-            "title": "Has Incoming For",
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "nullable": true
-          },
-          "has_outgoing_for": {
-            "title": "Has Outgoing For",
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "nullable": true
-          },
-          "addresses": {
-            "title": "Addresses",
-            "items": {
-              "$ref": "#/components/schemas/mesur_data_access__tradeverifyd__datamodels__entity__Address"
-            },
-            "type": "array",
-            "nullable": true
-          },
-          "subscribers": {
-            "title": "Subscribers",
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "nullable": true
-          },
-          "uuid": {
-            "title": "Uuid",
-            "type": "string",
-            "nullable": true
-          },
-          "region": {
-            "title": "Region",
-            "type": "string",
-            "nullable": true
-          },
-          "data_score": {
-            "title": "Data Score",
+          "value": {
             "type": "integer",
-            "nullable": true
+            "title": "The total number of relationships in the graph",
+            "default": 0
           },
-          "metaData": {
-            "$ref": "#/components/schemas/MetaData",
-            "nullable": true
-          },
-          "aliases": {
-            "title": "Aliases",
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "nullable": true
-          },
-          "affiliated_jurisdiction": {
-            "title": "Affiliated Jurisdiction",
+          "last_updated": {
             "type": "string",
-            "nullable": true
-          },
-          "opencorporates_additional": {
-            "description": "Additional data specific to OpenCorporates",
-            "$ref": "#/components/schemas/OpenCorporatesAdditional",
-            "nullable": true
-          },
-          "staged_entity_additional": {
-            "description": "Additional data specific to staged entities",
-            "$ref": "#/components/schemas/StagedEntityAdditional",
-            "nullable": true
+            "format": "date-time",
+            "title": "The last time the graph counts were updated",
+            "default": "2026-01-14T19:14:40.338498Z"
           }
         },
         "type": "object",
-        "required": [
-          "name",
-          "jurisdiction"
-        ],
-        "title": "Entity",
-        "description": "Information about a business entity queried via pymongo\n\nDatetime fields are parsed using dateutil.parser.parse\n(https://dateutil.readthedocs.io/en/stable/parser.html) Temporal resolution\nof input data varies, so resulting datetime objects may have 'time' fields\nzeroed-out. For example, dateutil.parser.parse(\"2023-1-1\") returns\ndatetime.datetime(2023,1,1,0,0). Resulting datetime will be naive unless\ninput string specifies an offset (\"+=\") or is explicitly in universal time\n(\"Z\", \"UTC\")\n\nThis model removes any sensitive information from records it is used to parse.\nTo override this behavior, pass 1 or more 'organization' values to validation context.\n\nExample:\n\nraw_entity_dict = {\n...\n}\n\n# Sensitive info removed\nEntity(**raw_entity_dict)\n\n# Sensitive info also removed\nEntity.model_validate(raw_entity_dict)\n\n# Information private to org 'purina' is available on the resulting object\nEntity.model_validate(raw_entity_dict, context={\"organization\": \"purina\"})\n\nAttributes:\n    id: Database id of the record, corresponds to mongodb '_id'.\n\n    schema_version: Document schema.\n\n    ids: array of Identifier class objects describing external identifiers for an entity.\n    May be None if no identifiers are available for an entity. Current possible values are:\n    ['BIC','CIN','LEI', 'opencorporates','registration','stock','tax','trademo']. BIC and LEI\n    values come from GLEIF, opencorporates comes from OpenCorporates, trademo comes from\n    Trademo, and CIN (company identification number), registration, stock, and tax come from\n    manual entity research.\n\n    name: a string represting the name of the entity\n\n    status: string indicating the current status of an entity, e.g.\n    \"ACTIVE\", \"INACTIVE\", etc. This field is not well-defined as definitions\n    vary between sources (i.e. GLEIF vs OpenCorporates, etc.)\n\n    jurisdiction: ISO country code of the entity if the jurisdiction is\n    known\n\n    created_at: Time record was created in database.\n\n    modified: Last time record was modified.\n\n    type: string representing what kind of entity the document represents,\n    e.g.  \"GENERAL\", \"Facility\", etc. This field is not well-defined as\n    definitions vary between sources (i.e. GLEIF vs OpenCorporates, etc.).\n\n    url: an array of web addresses as strings that are associated with the\n    entity, namely the company's main website or main source of information\n    online.\n\n    cyber: an instance of the Cyber class. This includes keys date, updated,\n    expires, managing LOU, and corroboration.\n\n    location: a dictionary of the Location class containing information on\n    LegalAddress, HeadquartersAddress, and facilities.\n\n    entity_creation_date: a datetime object in UTC timezone representing the\n    date the legal entity was formed.\n\n    registration: a instance of the Registration class containing\n    information on when the entity was registered.\n\n    metaData: an instance of the MetaData class.\n\n    deleted: Whether or not the flag is currently in-force.\n\n    deleted_at: If the flag is no longer in force for any reason, this field\n    is the time the flag ceased to be applicable to the target entity.\n\n    mesur_type: Distinguishes a business entity from a processing,\n    manufacturing, or other type of facility operated by a business entity.\n\n    priorData: Revision objects representing previous record states. Each\n    subdocument includes the date changes were applied, and a set of\n    key-value pairs, where each key corresponds to a field name, and each\n    value is the field value prior to the change.\n\n    tags: This field is unused/placeholder for future functionality. List of\n    tags associated with entity. Can be arbitrary values, possibly generated\n    by a LLM.\n\n    geo_location: This field is unused/placeholder for future functionality.\n    GeoJSON Point to serve as canonical geo location for entity.\n\n    flags: All undeleted Flag documents associated with this entity. This\n    field is populated by an asynchronous aggregation job, and may be stale.\n    For the freshest possible data, repopulate this field with a '$lookup'\n    stage from 'tradeverifyd.flags' at query time. By default, this Pydantic\n    model removes all non-public flags from entity data it parses. See above\n    for examples.\n\n    normalized_products: All HS codes associated with this entity, grouped\n    by the organization the shipping information belongs to. DO NOT use the\n    contents of this field to infer the existence or absence of\n    relationships for the entity, relations without HS codes will be missing\n    from this field. This field is populated by an asynchronous aggregation\n    job, and may be stale. For the freshest possible data, re-query relvant\n    relationships with a '$lookup' stage from\n    'tradeverifyd.entity_relationships' at query time. By default, this\n    Pydantic model removes all non-public relation info from the entity data\n    it parses. See above for examples.\n\n    has_incoming_for: List of 'organization' tokens for which entity should\n    be presented as having incoming relationship. This field is populated by\n    an asynchronous aggregation job, and may be stale.  For the freshest\n    possible data, repopulate this field with a '$lookup' stage from\n    'tradeverifyd.entity_relationships' at query time. By default, this\n    Pydantic model removes all organizations other than 'PUBLIC' from this\n    field.\n\n    has_outgoing_for: List of 'organization' tokens for which entity should\n    be presented as having outgoing relationships. This field is populated\n    by an asynchronous aggregation job, and may be stale.  For the freshest\n    possible data, repopulate this field with a '$lookup' stage from\n    'tradeverifyd.entity_relationships' at query time. By default, this\n    Pydantic model removes all organizations other than 'PUBLIC' from this\n    field.\n\n    last_aggregated: Timestamp matching start time of last time flag and\n    relationship related fields were aggregated onto this entity. All\n    records from the same aggregation run will have identical\n    'last_aggregated' time.\n\n    addresses: Address information associated with the entity. This field\n    has been added to accomodate data needs in Earthstream API and will be\n    unpopulated for entities not uploaded through that platform. Eventually,\n    all existing address data will likely be migrated to this field.\n\n    subscribers: References to all 'Subscription' objects in which the\n    Entity participates. This field is created dynamically when a new\n    'Subscription' gets created, most 'Entity' records will not have it.\n\n    risk_events: References to all Risk Events currently affecting the\n    entity. This field is created dynamically when a new 'RiskEvent'\n    propagates to the 'Entity', most records will not have it. The RiskEvent\n    records embedded in this field allow extra attributes, the shape\n    described here is the *minimum* data contract for an entry in\n    Entity.risk_events.\n\n    uuid: Optional uuid field for indentifying an Entity.\n\n    region: a code such as US-WA indicating a region of the jurisdiction\n    aligning with ISO 3166-2\n\n    affiliated_jurisdiction - Some Entity records have been assigned a\n    jurisdiction of UN, which is not a country, but indicates a world-wide\n    UN organization. We have set affiliated_jurisdiction to be UN, and set\n    jurisdiction from the entity's operating addresses\n\n    data_score: a quick score which indicates relative completeness for some\n    important fields in the entity record\n\n\n    opencorporates_additional - Additional data specific to opencorporates\n        home_jurisdiction_code: Jurisdiction code of the home company, in cases where the entity is a branch\n        home_jurisdiction_company_number: Company number of the home company if the entity is a branch\n        industry_code_uids: List of SIC codes (Standard Industrial Classifications)\n\n    staged_entity_additional - Additional data specific to staged entities (manually entered with staged_entities)\n        contact_info:\n        source_meta:\n        source_raw:"
-      },
-      "EntityDTO": {
-        "properties": {
-          "id": {
-            "type": "string",
-            "title": "Id",
-            "description": "Unique Entity identifier."
-          },
-          "name": {
-            "type": "string",
-            "title": "Name",
-            "description": "The formal or recognized name of the entity."
-          },
-          "description": {
-            "title": "Description",
-            "description": "Detailed information about the entity's purpose, background, or role.",
-            "type": "string",
-            "nullable": true
-          },
-          "primary_role": {
-            "title": "Primary Role",
-            "description": "The primary role of the entity (e.g., supplier, grower)",
-            "type": "string",
-            "nullable": true
-          },
-          "aliases": {
-            "title": "Aliases",
-            "description": "Alternative names and aliases",
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "nullable": true
-          },
-          "url": {
-            "title": "Url",
-            "description": "The official website or online resource associated with the entity.",
-            "type": "string",
-            "nullable": true
-          },
-          "jurisdiction": {
-            "type": "string",
-            "title": "Entity Jurisdiction",
-            "description": "ISO 3166 country code of the country where the entity operates or is governed."
-          },
-          "addresses": {
-            "title": "Addresses",
-            "description": "The physical or registered addresses of the entity.",
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "nullable": true
-          },
-          "extended_data": {
-            "title": "Extended Data",
-            "description": "Optional user-provided data associated to associate with the entity. This data is private and never used or shared across organizations.",
-            "additionalProperties": true,
-            "type": "object",
-            "nullable": true
-          },
-          "auto_research": {
-            "type": "boolean",
-            "title": "Research Entity",
-            "description": "If 'true', the data provided on this Entity may be used by Mesur systems to improve the quality and quantity of information associated with the Entity.",
-            "default": true
-          },
-          "monitor": {
-            "type": "boolean",
-            "title": "Monitor Entity",
-            "description": "If 'true', system events impacting this Entity or any Entity in its supply chain (as defined by the parameters set in Entity.subscription) will generate Notifications. Notifications can be viewed and acknowledged at /notifications endpoints.",
-            "default": false
-          },
-          "created_at": {
-            "type": "string",
-            "format": "date-time",
-            "title": "Created At",
-            "description": "Time record was created."
-          },
-          "modified": {
-            "type": "string",
-            "format": "date-time",
-            "title": "Modified",
-            "description": "Last time record was modified."
-          },
-          "callback_url": {
-            "title": "Callback Url",
-            "description": "If this entity is being monitored and a callback_url is provided, the callback URL will be periodically called if there are unacknowledged Notifications for this Entity.",
-            "type": "string",
-            "nullable": true
-          },
-          "region": {
-            "title": "Region",
-            "description": "Region code for the Enttiy",
-            "type": "string",
-            "nullable": true
-          },
-          "data_score": {
-            "title": "Data Score",
-            "description": "Numeric score indicating the relative completeness of the Entity record.",
-            "type": "integer",
-            "nullable": true
-          },
-          "affiliated_jurisdiction": {
-            "title": "Affiliated Jurisdiction",
-            "description": "Supplemental jurisdction information. For example, some Entities may be associate with super-governmental bodies like the United Nations.",
-            "type": "string",
-            "nullable": true
-          },
-          "subscription": {
-            "description": "If present, parameters set in Entity.subscription are used to define this Entity's supply chain.",
-            "$ref": "#/components/schemas/EntityDTOSubscription",
-            "nullable": true
-          },
-          "tradeverifyd_score": {
-            "title": "Tradeverifyd Score",
-            "description": "Entity's Tradeverifyd score. Entities with higher risk for supply chain or compliance issues will have a lower Tradeverifyd score.",
-            "type": "integer",
-            "nullable": true
-          },
-          "references": {
-            "title": "Entity References",
-            "description": "Summary counts of flags, relationships, and other references associated with this entity. Not specific to query.",
-            "$ref": "#/components/schemas/earthstream_services__services__entity__common__entity_dto__EntityReferences",
-            "nullable": true
-          },
-          "count_inferred_relationships": {
-            "title": "Inferred Relationships Count",
-            "description": "The number of inferred relationships in the graph.  Will not be present if the graph counts have not been calculated yet.",
-            "$ref": "#/components/schemas/earthstream_services__services__entity__common__entity_dto__EntityGraphCounts",
-            "nullable": true
-          }
-        },
-        "type": "object",
-        "required": [
-          "id",
-          "name",
-          "jurisdiction",
-          "created_at",
-          "modified"
-        ],
-        "title": "EntityDTO",
-        "description": "Entity information within the Earthstream API.\n\nAttributes:\n\n    id: A unique identifier for the entity, typically a UUID.\n\n    name: The formal or recognized name of the entity.\n\n    description: Detailed information about the entity, covering its purpose,\n    background, or role.\n\n    primary_role: The primary role an entity plays.\n\n    alias: Additional aliases that are associated with the entity, such as a\n    CTIN or DID.\n\n    url: The official website or a relevant online resource associated with the\n    entity.\n\n    jurisdiction: Legal or geographical area where the entity is registered or\n    primarily operates.\n\n    addresses: The physical or registered addresses of the entity.\n\n    extended_data: Additional, customizable data points about the entity, stored\n    as key-value pairs.\n\n    monitor: A flag indicating whether the entity should be under ongoing\n    surveillance or tracking.\n\n    references: summary counts of direct entity relationships and flags\n    - flags: Information about flags found for an entity\n    - from_relationships: The relationships where the given entity is on the 'from' side.\n        These relationships are considered 'outbound' from the entity.\n    - to_relationships: The relationships where the given entity is on the 'to' side.\n        These relationships are considered 'inbound' to the entity."
-      },
-      "EntityDTOSubscription": {
-        "properties": {
-          "included_hs_codes": {
-            "title": "Included Hs Codes",
-            "description": "HS codes to include when constructing upstream graph from this Entity. If null, all upstream Entities will be included in monitoring.",
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "nullable": true
-          },
-          "inclusion_strategy": {
-            "type": "string",
-            "enum": [
-              "strict",
-              "lax"
-            ],
-            "title": "Inclusion Strategy",
-            "description": "If 'hs_codes' are provided and 'filter_strategy' is 'strict', only relationships that match at least 1 of the provided codes will be followed while assembling the graph backward from the entrypoint Entity. If 'filter_strategy' is 'lax', every edge on any path between a matched HS code and the entrypoint is included, as well as every edge that lies between a matched HS code and the entrypoint Entity. If no HS codes are provided, this parameter has no effect.",
-            "default": "strict"
-          }
-        },
-        "type": "object",
-        "title": "EntityDTOSubscription",
-        "description": "Subscription information for entity monitoring configuration."
-      },
-      "EntityProductsEntry": {
-        "properties": {
-          "direction": {
-            "type": "string",
-            "enum": [
-              "incoming",
-              "outgoing"
-            ],
-            "title": "Direction"
-          },
-          "organization": {
-            "title": "Organization",
-            "type": "string",
-            "nullable": true
-          },
-          "normalized_products": {
-            "title": "Normalized Products",
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "nullable": true
-          }
-        },
-        "type": "object",
-        "required": [
-          "direction",
-          "organization",
-          "normalized_products"
-        ],
-        "title": "EntityProductsEntry",
-        "description": "Incoming or outgoing HS codes for the entity, grouped by organization.\n\nThese entries are populated at regular intervals by an asynchronous\naggregation, and may be stale.\n\nAttributes:\n    direction: Whether the parent entity is shipper or consignee of indicated codes.\n\n    organization: If \"PUBLIC\" or None, the information in this\n    EntityProductsEntry is public knowledge. Otherwise, it is private to the\n    indicated organization.\n\n    normalized_products: 2, 4, or 6-digit HS codes associated with this relationship."
+        "title": "EntityGraphCounts"
       },
       "EntitySearchResult": {
         "properties": {
@@ -9757,7 +8888,7 @@
           "count_inferred_relationships": {
             "title": "Inferred Relationships Count",
             "description": "The number of inferred relationships in the graph.  Will not be present if the graph counts have not been calculated yet.",
-            "$ref": "#/components/schemas/earthstream_services__services__entity__common__entity_dto__EntityGraphCounts",
+            "$ref": "#/components/schemas/EntityGraphCounts",
             "nullable": true
           },
           "external_ids": {
@@ -9774,6 +8905,12 @@
             "description": "Last time entity record was modified (timezone-aware UTC)",
             "type": "string",
             "format": "date-time",
+            "nullable": true
+          },
+          "hs_codes": {
+            "title": "HS Codes",
+            "description": "Harmonized System codes for products traded by this entity, organized by direction",
+            "$ref": "#/components/schemas/HsCodes",
             "nullable": true
           }
         },
@@ -10521,28 +9658,6 @@
         "type": "object",
         "title": "Flags"
       },
-      "GeoJSONPoint": {
-        "properties": {
-          "type": {
-            "type": "string",
-            "title": "Type"
-          },
-          "coordinates": {
-            "items": {
-              "type": "number"
-            },
-            "type": "array",
-            "title": "Coordinates"
-          }
-        },
-        "type": "object",
-        "required": [
-          "type",
-          "coordinates"
-        ],
-        "title": "GeoJSONPoint",
-        "description": "GeoJson object that matches Google Maps format for \"Point\" types specifically.\n\"Point\" types are most useful for representing precise address lines or locations.\n\nAttributes:\n    type: Defines the kind of GeoJson format.\n\n    coordinates: a list of floats representing ['longitude', 'latitude']"
-      },
       "GetEntityResponse": {
         "properties": {
           "id": {
@@ -10641,7 +9756,7 @@
           "count_inferred_relationships": {
             "title": "Inferred Relationships Count",
             "description": "The number of inferred relationships in the graph.  Will not be present if the graph counts have not been calculated yet.",
-            "$ref": "#/components/schemas/earthstream_services__services__entity__common__entity_dto__EntityGraphCounts",
+            "$ref": "#/components/schemas/EntityGraphCounts",
             "nullable": true
           }
         },
@@ -10655,38 +9770,6 @@
         ],
         "title": "GetEntityResponse",
         "description": "Response model for entities.\n\n Attributes:\n\n    id: Unique entity identifier.\n\n    name: Entity name.\n\n    description: Detailed information about the entity, covering its purpose,\n    background, or role.\n\n    primary_role: The primary role an entity plays.\n\n    aliases: Additional aliases that are associated with the entity.\n\n    url: The official website or a relevant online resource associated with the\n    entity.\n\n    jurisdiction: The country the entity is associated with.\n\n    addresses: The physical or registered addresses of the entity.\n\n    monitor: A boolean indicating if this entity's events will generate notifications.\n\n    created_at: Time the entity record was created.\n\n    modified: Time the record was last modified.\n\n    region: Entity's region code.\n\n    affiliated_jurisdiction: Supplemental jurisdiction information.\n\n    tradeverifyd_score: Computed Tradeverifyd score for the entity.\n\n    references: Summary counts of direct entity relationships and flags.\n\n    count_inferred_relationships: Optional value for number of inferred relationships in the entity graph, if already calculated."
-      },
-      "GetRelationshipsResponse": {
-        "properties": {
-          "entity": {
-            "$ref": "#/components/schemas/EntityDTO",
-            "description": "The starting entity for the relationship graph"
-          },
-          "relationships": {
-            "items": {
-              "$ref": "#/components/schemas/PopulatedRelationship"
-            },
-            "type": "array",
-            "title": "Relationships",
-            "description": "The list of relationships for a given entity",
-            "default": []
-          },
-          "entity_graph_counts": {
-            "items": {
-              "$ref": "#/components/schemas/app__schemas__metadata__EntityGraphCounts"
-            },
-            "type": "array",
-            "title": "Entity Graph Counts",
-            "description": "A list of entity graph sizes",
-            "default": []
-          }
-        },
-        "type": "object",
-        "required": [
-          "entity"
-        ],
-        "title": "GetRelationshipsResponse",
-        "description": "The response model for getting the relationships for a given entity."
       },
       "GetRiskEventsResponse": {
         "properties": {
@@ -10729,287 +9812,6 @@
         "title": "GetRiskEventsResponse",
         "description": "Response payload for GET RiskEvents query"
       },
-      "GraphEntity": {
-        "properties": {
-          "created_at": {
-            "type": "string",
-            "format": "date-time",
-            "title": "Created At"
-          },
-          "modified": {
-            "type": "string",
-            "format": "date-time",
-            "title": "Modified"
-          },
-          "batch": {
-            "title": "Batch",
-            "type": "string",
-            "nullable": true
-          },
-          "_id": {
-            "type": "string",
-            "title": "Id",
-            "default": "None"
-          },
-          "schema_version": {
-            "type": "integer",
-            "title": "Schema Version",
-            "default": 1
-          },
-          "ids": {
-            "title": "Ids",
-            "items": {
-              "$ref": "#/components/schemas/mesur_data_access__tradeverifyd__datamodels__common__Identifier"
-            },
-            "type": "array",
-            "nullable": true
-          },
-          "name": {
-            "type": "string",
-            "title": "Name"
-          },
-          "status": {
-            "title": "Status",
-            "type": "string",
-            "nullable": true
-          },
-          "jurisdiction": {
-            "type": "string",
-            "maxLength": 2,
-            "title": "Jurisdiction"
-          },
-          "type": {
-            "title": "Type",
-            "type": "string",
-            "nullable": true
-          },
-          "url": {
-            "title": "Url",
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "nullable": true
-          },
-          "cyber": {
-            "$ref": "#/components/schemas/Cyber",
-            "nullable": true
-          },
-          "location": {
-            "$ref": "#/components/schemas/Location",
-            "nullable": true
-          },
-          "entity_creation_date": {
-            "title": "Entity Creation Date",
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "registration": {
-            "$ref": "#/components/schemas/Registration",
-            "nullable": true
-          },
-          "research": {
-            "$ref": "#/components/schemas/Research",
-            "nullable": true
-          },
-          "deleted_at": {
-            "title": "Deleted At",
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "deleted": {
-            "type": "boolean",
-            "title": "Deleted",
-            "default": false
-          },
-          "mesur_type": {
-            "type": "string",
-            "enum": [
-              "Company",
-              "Facility",
-              "Farm"
-            ],
-            "title": "Mesur Type",
-            "description": "Describes the type of entity. Being either a legal company or a physical location",
-            "default": "Company"
-          },
-          "tags": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "title": "Tags",
-            "description": "List of tags associated with entity. Can be arbitrary values, possibly generated by a LLM",
-            "default": []
-          },
-          "geo_location": {
-            "title": "Geo Location",
-            "description": "Geographic location of entity",
-            "additionalProperties": true,
-            "type": "object",
-            "nullable": true
-          },
-          "priorData": {
-            "title": "Priordata",
-            "items": {
-              "additionalProperties": true,
-              "type": "object"
-            },
-            "type": "array",
-            "nullable": true
-          },
-          "flags": {
-            "title": "Flags",
-            "items": {
-              "anyOf": [
-                {
-                  "$ref": "#/components/schemas/Flag"
-                },
-                {
-                  "$ref": "#/components/schemas/DisplayFlag"
-                }
-              ]
-            },
-            "type": "array",
-            "nullable": true
-          },
-          "normalized_products": {
-            "title": "Normalized Products",
-            "items": {
-              "$ref": "#/components/schemas/EntityProductsEntry"
-            },
-            "type": "array",
-            "nullable": true
-          },
-          "last_aggregated": {
-            "title": "Last Aggregated",
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "has_incoming_for": {
-            "title": "Has Incoming For",
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "nullable": true
-          },
-          "has_outgoing_for": {
-            "title": "Has Outgoing For",
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "nullable": true
-          },
-          "addresses": {
-            "title": "Addresses",
-            "items": {
-              "$ref": "#/components/schemas/mesur_data_access__tradeverifyd__datamodels__entity__Address"
-            },
-            "type": "array",
-            "nullable": true
-          },
-          "subscribers": {
-            "title": "Subscribers",
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "nullable": true
-          },
-          "uuid": {
-            "title": "Uuid",
-            "type": "string",
-            "nullable": true
-          },
-          "region": {
-            "title": "Region",
-            "type": "string",
-            "nullable": true
-          },
-          "data_score": {
-            "title": "Data Score",
-            "type": "integer",
-            "nullable": true
-          },
-          "metaData": {
-            "$ref": "#/components/schemas/MetaData",
-            "nullable": true
-          },
-          "aliases": {
-            "title": "Aliases",
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "nullable": true
-          },
-          "affiliated_jurisdiction": {
-            "title": "Affiliated Jurisdiction",
-            "type": "string",
-            "nullable": true
-          },
-          "opencorporates_additional": {
-            "description": "Additional data specific to OpenCorporates",
-            "$ref": "#/components/schemas/OpenCorporatesAdditional",
-            "nullable": true
-          },
-          "staged_entity_additional": {
-            "description": "Additional data specific to staged entities",
-            "$ref": "#/components/schemas/StagedEntityAdditional",
-            "nullable": true
-          },
-          "tradeverifyd_risk_score": {
-            "title": "Tradeverifyd Risk Score",
-            "description": "Aggregate risk score for the entire graph (assigned to entrypoint)",
-            "type": "integer",
-            "nullable": true
-          },
-          "graph_relative_risk_score": {
-            "title": "Graph Relative Risk Score",
-            "description": "Relative risk score for each entity within the graph",
-            "type": "integer",
-            "nullable": true
-          },
-          "upstream_depth": {
-            "type": "integer",
-            "title": "Upstream Depth",
-            "default": -1
-          },
-          "downstream_depth": {
-            "type": "integer",
-            "title": "Downstream Depth",
-            "default": -1
-          },
-          "depth": {
-            "title": "Depth",
-            "description": "Shortest distance from graph query entrypoint. This field will only\nreturn the UPSTREAM distance. If this Entity does not participate in the\nupstream graph of the entrypoint Entity for the graph, 'depth' will be\nNone.",
-            "readOnly": true,
-            "type": "integer",
-            "nullable": true
-          },
-          "downstream_distance": {
-            "title": "Downstream Distance",
-            "description": "Shortest available distance from entrypoint Entity to this Entity if\ntraversing from this Entity to the entrypoint. This field will only\nreturn the DOWNSTREAM distance.  If this Entity does not participate in\nthe downstream graph of the entrypoint Entity for the graph,\n'downstream_distance' will be None.",
-            "readOnly": true,
-            "type": "integer",
-            "nullable": true
-          }
-        },
-        "type": "object",
-        "required": [
-          "name",
-          "jurisdiction",
-          "depth",
-          "downstream_distance"
-        ],
-        "title": "GraphEntity",
-        "description": "Entity with flag information populated.\n\nAttributes:\n    flags: Any flag records associated with the entity."
-      },
       "HTTPValidationError": {
         "properties": {
           "detail": {
@@ -11022,6 +9824,29 @@
         },
         "type": "object",
         "title": "HTTPValidationError"
+      },
+      "HsCodes": {
+        "properties": {
+          "incoming": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Incoming",
+            "description": "HS codes for products received by this entity"
+          },
+          "outgoing": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Outgoing",
+            "description": "HS codes for products shipped by this entity"
+          }
+        },
+        "type": "object",
+        "title": "HsCodes",
+        "description": "HS codes organized by direction (incoming/outgoing shipments)"
       },
       "IssuedVerifiableCredentialResponse": {
         "properties": {
@@ -11051,326 +9876,6 @@
         "title": "IssuedVerifiableCredentialResponse",
         "description": "Issued verifiable credential response"
       },
-      "KeyMaterial": {
-        "properties": {
-          "did": {
-            "title": "Did",
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "type": "object",
-        "title": "KeyMaterial",
-        "description": "Key material for an entity"
-      },
-      "Location": {
-        "properties": {
-          "LegalAddress": {
-            "$ref": "#/components/schemas/LocationInformation"
-          },
-          "HeadquartersAddress": {
-            "$ref": "#/components/schemas/LocationInformation"
-          }
-        },
-        "type": "object",
-        "title": "Location",
-        "description": "Location information for an entity"
-      },
-      "LocationInformation": {
-        "properties": {
-          "language": {
-            "title": "Language",
-            "type": "string",
-            "nullable": true
-          },
-          "addressLines": {
-            "title": "Addresslines",
-            "items": {
-              "type": "string",
-              "nullable": true
-            },
-            "type": "array",
-            "nullable": true
-          },
-          "addressNumber": {
-            "title": "Addressnumber",
-            "type": "string",
-            "nullable": true
-          },
-          "addressNumberWithinBuilding": {
-            "title": "Addressnumberwithinbuilding",
-            "type": "string",
-            "nullable": true
-          },
-          "mailRouting": {
-            "title": "Mailrouting",
-            "type": "string",
-            "nullable": true
-          },
-          "city": {
-            "title": "City",
-            "type": "string",
-            "nullable": true
-          },
-          "region": {
-            "title": "Region",
-            "type": "string",
-            "nullable": true
-          },
-          "country": {
-            "title": "Country",
-            "type": "string",
-            "nullable": true
-          },
-          "postalCode": {
-            "title": "Postalcode",
-            "type": "string",
-            "nullable": true
-          },
-          "coordinates": {
-            "$ref": "#/components/schemas/Coordinates",
-            "nullable": true
-          }
-        },
-        "type": "object",
-        "title": "LocationInformation",
-        "description": "Legal address information for an entity"
-      },
-      "MetaData": {
-        "properties": {
-          "aliases": {
-            "title": "Aliases",
-            "items": {
-              "$ref": "#/components/schemas/Alias"
-            },
-            "type": "array",
-            "nullable": true
-          }
-        },
-        "type": "object",
-        "title": "MetaData",
-        "description": "Metadata information for an entity"
-      },
-      "OpenCorporatesAdditional": {
-        "properties": {
-          "home_jurisdiction_code": {
-            "title": "Home Jurisdiction Code",
-            "description": "Jurisdiction code of the home company, in cases where the entity is a branch.",
-            "type": "string",
-            "maxLength": 8,
-            "nullable": true
-          },
-          "home_jurisdiction_company_number": {
-            "title": "Home Jurisdiction Company Number",
-            "description": "Company number of the home company if the entity is a branch.",
-            "type": "string",
-            "maxLength": 128,
-            "nullable": true
-          },
-          "industry_code_uids": {
-            "title": "Industry Code Uids",
-            "description": "List of SIC codes. Standard Industrial Classifications.",
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "nullable": true
-          }
-        },
-        "additionalProperties": true,
-        "type": "object",
-        "title": "OpenCorporatesAdditional",
-        "description": "additional useful information coming from OpenCorporates data"
-      },
-      "PopulatedRelationship": {
-        "properties": {
-          "created_at": {
-            "type": "string",
-            "format": "date-time",
-            "title": "Created At"
-          },
-          "modified": {
-            "type": "string",
-            "format": "date-time",
-            "title": "Modified"
-          },
-          "batch": {
-            "title": "Batch",
-            "type": "string",
-            "nullable": true
-          },
-          "_id": {
-            "type": "string",
-            "title": "Id",
-            "default": "None"
-          },
-          "schema_version": {
-            "type": "integer",
-            "title": "Schema Version",
-            "default": 2
-          },
-          "relation_to": {
-            "$ref": "#/components/schemas/GraphEntity"
-          },
-          "relation_from": {
-            "$ref": "#/components/schemas/GraphEntity"
-          },
-          "type": {
-            "type": "string",
-            "enum": [
-              "DIRECTLY_CONSOLIDATES",
-              "FEEDS_FROM",
-              "FINANCES",
-              "FUND_MANAGES",
-              "IN_COLLABORATIVE_VENTURE_WITH",
-              "IS_AFFILIATE_OF",
-              "IS_AN_AGENT_OF",
-              "IS_A_VENDOR_OF",
-              "IS_BUSINESS_PARTNER_OF",
-              "IS_MAJORITY_SHAREHOLDER_OF",
-              "IS_MANUFACTURER_OF",
-              "IS_MERGED_WITH",
-              "IS_PARTNER_IN_JOINT_VENTURE",
-              "IS_SUBISIDIARY_OF",
-              "IS_SUPPLIER_OF",
-              "IS_LIKELY_SUPPLIER_OF",
-              "IS_THE_HOLDING_COMPANY_OF",
-              "IS_THE_PARENT_COMPANY_OF",
-              "IS_THE_TRADE_UNION_FOR",
-              "IS_TRADEMARK_OF",
-              "IS_TRAINING_PARTNER_OF",
-              "OPERATES_INTERNATIONAL_BRANCH",
-              "OWNS_COLLABORATIVE_VENTURE",
-              "OWNS_FUND",
-              "SHIPS_GOODS_TO",
-              "SHIPS_VIA",
-              "ULTIMATELY_CONSOLIDATES",
-              "IS_OTHERWISE_LINKED_TO",
-              "RELATED_TO"
-            ],
-            "title": "Type"
-          },
-          "source": {
-            "title": "Source",
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "nullable": true
-          },
-          "created_by": {
-            "type": "string",
-            "title": "Created By"
-          },
-          "rel_start": {
-            "title": "Rel Start",
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "rel_status": {
-            "title": "Rel Status",
-            "type": "string",
-            "nullable": true
-          },
-          "rel_end": {
-            "title": "Rel End",
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "products": {
-            "title": "Products",
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "nullable": true
-          },
-          "normalized_products": {
-            "title": "Normalized Products",
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "nullable": true
-          },
-          "customer_managed": {
-            "type": "boolean",
-            "title": "Customer Managed"
-          },
-          "owner_email": {
-            "title": "Owner Email",
-            "type": "string",
-            "nullable": true
-          },
-          "organization": {
-            "title": "Organization",
-            "type": "string",
-            "nullable": true
-          },
-          "deleted": {
-            "type": "boolean",
-            "title": "Deleted",
-            "default": false
-          },
-          "deleted_at": {
-            "title": "Deleted At",
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "gleif_deleted": {
-            "type": "boolean",
-            "title": "Gleif Deleted",
-            "default": false
-          },
-          "gleif_deleted_at": {
-            "title": "Gleif Deleted At",
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "es_products": {
-            "title": "Es Products",
-            "items": {
-              "$ref": "#/components/schemas/Product"
-            },
-            "type": "array",
-            "nullable": true
-          },
-          "notes": {
-            "title": "Notes",
-            "type": "string",
-            "nullable": true
-          },
-          "ids": {
-            "title": "Ids",
-            "items": {
-              "$ref": "#/components/schemas/mesur_data_access__tradeverifyd__datamodels__common__Identifier"
-            },
-            "type": "array",
-            "nullable": true
-          },
-          "is_privileged": {
-            "type": "boolean",
-            "title": "Is Privileged",
-            "description": "Indicates if this relationship requires privileged access. Access to privileged relationships is governed by data contracts and customer contracts.",
-            "default": false
-          }
-        },
-        "type": "object",
-        "required": [
-          "relation_to",
-          "relation_from",
-          "type",
-          "created_by",
-          "customer_managed",
-          "organization"
-        ],
-        "title": "PopulatedRelationship",
-        "description": "Identical to EntityRelationship, except that 'relation_to' and 'relation_from'\nfields are populated with 'GraphEntity' objects instead of only ids."
-      },
       "ProblematicEntity": {
         "properties": {
           "id": {
@@ -11391,7 +9896,7 @@
           },
           "addresses": {
             "items": {
-              "$ref": "#/components/schemas/earthstream_services__services__tvpra__tvpra_models__Address"
+              "$ref": "#/components/schemas/Address"
             },
             "type": "array",
             "title": "Addresses",
@@ -11428,72 +9933,6 @@
         ],
         "title": "ProblematicEntity",
         "description": "An Entity identified as problematic during verification."
-      },
-      "Product": {
-        "properties": {
-          "created_at": {
-            "type": "string",
-            "format": "date-time",
-            "title": "Created At"
-          },
-          "modified": {
-            "type": "string",
-            "format": "date-time",
-            "title": "Modified"
-          },
-          "id": {
-            "type": "string",
-            "title": "Id"
-          },
-          "aliases": {
-            "title": "Aliases",
-            "items": {
-              "$ref": "#/components/schemas/mesur_data_access__tradeverifyd__datamodels__common__Identifier"
-            },
-            "type": "array",
-            "nullable": true
-          },
-          "name": {
-            "title": "Name",
-            "type": "string",
-            "nullable": true
-          },
-          "description": {
-            "title": "Description",
-            "type": "string",
-            "nullable": true
-          },
-          "price": {
-            "title": "Price",
-            "type": "number",
-            "nullable": true
-          },
-          "category": {
-            "title": "Category",
-            "type": "string",
-            "nullable": true
-          },
-          "manufacturer": {
-            "title": "Manufacturer",
-            "items": {
-              "$ref": "#/components/schemas/Entity"
-            },
-            "type": "array",
-            "nullable": true
-          },
-          "extended_data": {
-            "title": "Extended Data",
-            "additionalProperties": true,
-            "type": "object",
-            "nullable": true
-          }
-        },
-        "type": "object",
-        "required": [
-          "id"
-        ],
-        "title": "Product",
-        "description": "Represents a product with comprehensive attributes, suitable for inventory\nmanagement, cataloging, or e-commerce systems.\n\nAttributes:\n    id: Unique identifier of the product, used for tracking and reference.\n        Max length 128 characters.\n    aliases: additional identifiers associated with the prodcut, such as a GTIN or hscode.\n    name: The name of the product.\n    description: A detailed description of the product.\n    price: Optional field for specifying the price of the product. Defaults\n           to None.\n    category: The category or classification of the product.\n    manufacturer: Optional list of identifiers of the manufacturers of the\n                  product. Defaults to None.\n    extended_data: A dictionary for storing additional data related to the\n                   product, allowing flexibility to include various\n                   extended attributes.\n\nNote:\n    This class can be adapted or extended to suit specific requirements for\n    different types of products or industry standards."
       },
       "PublicAbridgedGraph": {
         "properties": {
@@ -11749,54 +10188,6 @@
         ],
         "title": "PublicRelationship",
         "description": "Public relationship response model - only exposes what consumers need"
-      },
-      "Registration": {
-        "properties": {
-          "date": {
-            "title": "Date",
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "updated": {
-            "title": "Updated",
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "expires": {
-            "title": "Expires",
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "managingLOU": {
-            "title": "Managinglou",
-            "type": "string",
-            "nullable": true
-          },
-          "corroboration": {
-            "$ref": "#/components/schemas/Corroboration",
-            "nullable": true
-          },
-          "status": {
-            "type": "string",
-            "enum": [
-              "current",
-              "expired",
-              "unknown"
-            ],
-            "title": "Status",
-            "description": "Whether or not this entity's GLEIF registration is expired.\n\nA value of 'current' means 'This entity's GLEIF registration status is known, and\nit was not expired at the time the entity was retrieved from Mesur database.\n\nA value of 'expired' means 'This entity's GLEIF registration status is known, and\nit was expired at the time the entity was retrieved from Mesur database.\n\nA value of 'unknown' means 'There may or may not be other GLEIF registration data\navailable on this record, but it does not include an expiration date, so no\ndetermination about the currency of that registration was possible at the time the\nentity was retrieved from Mesur database'.",
-            "readOnly": true
-          }
-        },
-        "type": "object",
-        "required": [
-          "status"
-        ],
-        "title": "Registration",
-        "description": "Registration information for an entity\n\nDatetime fields are parsed using dateutil.parser.parse\n(https://dateutil.readthedocs.io/en/stable/parser.html).\nTemporal resolution of input data varies, so resulting datetime\nobjects may have 'time' fields zeroed-out. For example,\ndateutil.parser.parse(\"2023-1-1\") returns\ndatetime.datetime(2023,1,1,0,0). Resulting datetime will be naive\nunless input string specifies an offset (\"+=\") or is explicitly\nin universal time (\"Z\", \"UTC\").\nCurrently, the underlying data on date, updated, and expires fields\nare mixed type fields, either str or datetime."
       },
       "RelationshipCount": {
         "properties": {
@@ -12091,21 +10482,6 @@
         ],
         "title": "RequestIssueVerifiableCredential",
         "description": "User supplied verifiable credential claimset\nThis model is updated / modified by the server before issuance\nBe careful trusting user supplied data"
-      },
-      "Research": {
-        "properties": {
-          "supply_bot": {
-            "$ref": "#/components/schemas/SupplyBotResearch",
-            "nullable": true
-          },
-          "block_agi": {
-            "$ref": "#/components/schemas/BlockAGIResearch",
-            "nullable": true
-          }
-        },
-        "type": "object",
-        "title": "Research",
-        "description": "Entity intelligence gathered by automated systems"
       },
       "RiskEvent": {
         "properties": {
@@ -12670,37 +11046,6 @@
         "title": "Source",
         "description": "Represents a web-based resource or document, providing key identification\nand content details.\n\nAttributes:\n    id: A unique identifier for the source, useful in tracking\n        or referencing.\n    url: The web address where the source can be accessed,\n        providing direct linkage.\n    title: The title of the web resource, summarizing its content\n        or purpose.\n    full_text: The complete textual content of the resource,\n        useful for analysis or reference.\n    signature: A digital signature associated with the source,\n        serving as a means of verification or authenticity.\n    translations: Any translations of the source\n\nNote:\n    This model is adaptable for inclusion of additional metadata\n    fields to enrich the description and context of the source."
       },
-      "StagedEntityAdditional": {
-        "properties": {
-          "contact_info": {
-            "title": "Contact Info",
-            "additionalProperties": true,
-            "type": "object",
-            "nullable": true
-          },
-          "source_meta": {
-            "title": "Source Meta",
-            "additionalProperties": true,
-            "type": "object",
-            "nullable": true
-          },
-          "source_raw": {
-            "title": "Source Raw",
-            "additionalProperties": true,
-            "type": "object",
-            "nullable": true
-          }
-        },
-        "additionalProperties": true,
-        "type": "object",
-        "required": [
-          "contact_info",
-          "source_meta",
-          "source_raw"
-        ],
-        "title": "StagedEntityAdditional",
-        "description": "Additional data specific to staged entities"
-      },
       "SubmitPresentationRequest": {
         "properties": {
           "shipment_id": {
@@ -13109,102 +11454,6 @@
         ],
         "title": "SupplierInformationSuggestedContactResponse",
         "description": "Response model for suggested contact information for a supplier"
-      },
-      "SupplyBotResearch": {
-        "properties": {
-          "created_at": {
-            "type": "string",
-            "format": "date-time",
-            "title": "Created At"
-          },
-          "modified": {
-            "type": "string",
-            "format": "date-time",
-            "title": "Modified"
-          },
-          "timestamp": {
-            "type": "string",
-            "format": "date-time",
-            "title": "Timestamp"
-          },
-          "engine": {
-            "type": "string",
-            "title": "Engine"
-          },
-          "version": {
-            "type": "string",
-            "title": "Version"
-          },
-          "results": {
-            "$ref": "#/components/schemas/SupplyBotResults"
-          }
-        },
-        "type": "object",
-        "required": [
-          "timestamp",
-          "engine",
-          "version",
-          "results"
-        ],
-        "title": "SupplyBotResearch",
-        "description": "Detailed entity supply chain information synthesized by LLM"
-      },
-      "SupplyBotResults": {
-        "properties": {
-          "created_at": {
-            "type": "string",
-            "format": "date-time",
-            "title": "Created At"
-          },
-          "modified": {
-            "type": "string",
-            "format": "date-time",
-            "title": "Modified"
-          },
-          "trade_partners": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "title": "Trade Partners"
-          },
-          "trade_partner_flags": {
-            "title": "Trade Partner Flags",
-            "additionalProperties": {
-              "items": {
-                "type": "string"
-              },
-              "type": "array"
-            },
-            "type": "object",
-            "nullable": true
-          },
-          "trade_partner_risk_research": {
-            "type": "string",
-            "title": "Trade Partner Risk Research"
-          },
-          "flags": {
-            "title": "Flags",
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "nullable": true
-          },
-          "risk_research": {
-            "title": "Risk Research",
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "type": "object",
-        "required": [
-          "trade_partners",
-          "trade_partner_flags",
-          "trade_partner_risk_research"
-        ],
-        "title": "SupplyBotResults",
-        "description": "Result details from research powered by 'supply_bot' engine"
       },
       "TASAContentsResponse": {
         "properties": {
@@ -13698,45 +11947,6 @@
         "title": "Pagination",
         "description": "Using to return paging information to the client\ncurrent_page: the current page of data\ntotal_pages: the total number of pages\ntotal_records: the number of records found\npage_size: the current page size"
       },
-      "app__schemas__metadata__EntityGraphCounts": {
-        "properties": {
-          "id": {
-            "type": "string",
-            "title": "Id",
-            "description": "Unique Entity identifier."
-          },
-          "name": {
-            "type": "string",
-            "title": "Name",
-            "description": "The formal or recognized name of the entity."
-          },
-          "child_count": {
-            "type": "integer",
-            "title": "Child Count",
-            "description": "The number of distinct related entities begining with the given entity.",
-            "default": 1
-          },
-          "relationship_count": {
-            "type": "integer",
-            "title": "Relationship Count",
-            "description": "The number of total relationships begining with the given entity.",
-            "default": 1
-          },
-          "flag_count": {
-            "type": "integer",
-            "title": "Flag Count",
-            "description": "The number of flags found in the entities relationships.",
-            "default": 0
-          }
-        },
-        "type": "object",
-        "required": [
-          "id",
-          "name"
-        ],
-        "title": "EntityGraphCounts",
-        "description": "The response model delivering a list of entities and their respective graph counts\nwith a given default depth."
-      },
       "app__schemas__metadata__Identifier": {
         "properties": {
           "id": {
@@ -13854,28 +12064,6 @@
         "title": "CBPRequest",
         "description": "CBP Request information (shared schema for both public and internal APIs)"
       },
-      "earthstream_services__services__entity__common__entity_dto__EntityGraphCounts": {
-        "properties": {
-          "depth": {
-            "type": "integer",
-            "title": "The depth of the graph traversal",
-            "default": 3
-          },
-          "value": {
-            "type": "integer",
-            "title": "The total number of relationships in the graph",
-            "default": 0
-          },
-          "last_updated": {
-            "type": "string",
-            "format": "date-time",
-            "title": "The last time the graph counts were updated",
-            "default": "2025-12-15T15:27:04.005998Z"
-          }
-        },
-        "type": "object",
-        "title": "EntityGraphCounts"
-      },
       "earthstream_services__services__entity__common__entity_dto__EntityReferences": {
         "properties": {
           "flags": {
@@ -13988,30 +12176,6 @@
         "title": "Pagination",
         "description": "Using to return paging information to the client.\n\ncurrent_page: the current page of data\n\ntotal_pages: the total number of pages\n\ntotal_records: the number of records found\n\npage_size: the current page size"
       },
-      "earthstream_services__services__tvpra__tvpra_models__Address": {
-        "properties": {
-          "address": {
-            "type": "string",
-            "title": "Address"
-          },
-          "problematic": {
-            "type": "boolean",
-            "title": "Problematic",
-            "default": false
-          },
-          "problem_region": {
-            "title": "Problem Region",
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "type": "object",
-        "required": [
-          "address"
-        ],
-        "title": "Address",
-        "description": "Information about an Entity's Address."
-      },
       "earthstream_services__services__us_customs__schemas__us_customs__CBPRequest": {
         "properties": {
           "id": {
@@ -14119,77 +12283,6 @@
         ],
         "title": "Identifier",
         "description": "External ID for an entity"
-      },
-      "mesur_data_access__tradeverifyd__datamodels__entity__Address": {
-        "properties": {
-          "address_id": {
-            "type": "string",
-            "title": "Address Id"
-          },
-          "type": {
-            "type": "string",
-            "enum": [
-              "headquarters",
-              "legal",
-              "general"
-            ],
-            "title": "Type"
-          },
-          "language": {
-            "title": "Language",
-            "type": "string",
-            "nullable": true
-          },
-          "lines": {
-            "title": "Lines",
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "nullable": true
-          },
-          "city": {
-            "title": "City",
-            "type": "string",
-            "nullable": true
-          },
-          "region": {
-            "title": "Region",
-            "type": "string",
-            "nullable": true
-          },
-          "country": {
-            "title": "Country",
-            "type": "string",
-            "nullable": true
-          },
-          "postal_code": {
-            "title": "Postal Code",
-            "type": "string",
-            "nullable": true
-          },
-          "coordinates": {
-            "$ref": "#/components/schemas/GeoJSONPoint",
-            "nullable": true
-          },
-          "is_default": {
-            "type": "boolean",
-            "title": "Is Default"
-          },
-          "research_metadata": {
-            "title": "Research Metadata",
-            "additionalProperties": true,
-            "type": "object",
-            "nullable": true
-          }
-        },
-        "type": "object",
-        "required": [
-          "type",
-          "is_default"
-        ],
-        "title": "Address",
-        "description": "Address object that matches Earthstream API format. Eventually, all existing\naddress information will migrate to this field.\n\nAttributes:\n    address_id: Unique identifier for this address instance.\n\n    type: Defines the kind of location Address represents, if it is known.\n    If unspecified, value will be 'general'.\n\n    language: two to four letter string comprising the ISO language code in\n    which the address lines are written\n\n    lines: One or more strings representing a plain-text address. Roll\n    LocationInformation fields addressNumber, addressNumberWithinBuilding,\n    and mailRouting into this string.\n\n    city: one string representing a plain-text city name.\n\n    region: one string representing a plain-text region name.\n\n    country: one string representing a plain-text country name.\n\n    postal_code: one string representing a plain-text address postal code.\n\n    coordinates: object of GeoJSONPoint class representing latitude and\n    longitude\n\n    is_default: boolean allowing tracking of which Address is providing\n    top-level 'jurisdiction' info. That way if there are multiple different\n    addresses for an Entity, the default address can easily be retrieved"
       }
     },
     "securitySchemes": {
