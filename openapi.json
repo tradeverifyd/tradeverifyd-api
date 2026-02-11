@@ -8772,11 +8772,17 @@
             "title": "The total number of relationships in the graph",
             "default": 0
           },
+          "flagged_count": {
+            "type": "integer",
+            "title": "Flagged Count",
+            "description": "Flagged upstream entities count",
+            "default": 0
+          },
           "last_updated": {
             "type": "string",
             "format": "date-time",
             "title": "The last time the graph counts were updated",
-            "default": "2026-01-28T19:03:23.973153Z"
+            "default": "2026-02-11T21:01:47.816380Z"
           }
         },
         "type": "object",
