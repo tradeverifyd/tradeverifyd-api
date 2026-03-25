@@ -8689,6 +8689,32 @@
         "title": "DataStatus",
         "description": "Supoorts enhancing a class with status information.\n\nAttributes:\n    state: the state value: invalid, suspected, or confirmed. Defaults to\n    suspected.\n    confidence: the level of confidence in the state: almost no chance, very unlikely,\n    unlikely, roughly even chance, likely, very likely, almost certain.\n    sources: a list of sources supporting the state and confidence level."
       },
+      "DepthInfo": {
+        "properties": {
+          "depth": {
+            "type": "integer",
+            "title": "Depth",
+            "description": "The depth of the flag in the relationship."
+          },
+          "direction": {
+            "type": "string",
+            "enum": [
+              "upstream",
+              "downstream",
+              "entry"
+            ],
+            "title": "Direction",
+            "description": "The direction of the flag in the relationship."
+          }
+        },
+        "type": "object",
+        "required": [
+          "depth",
+          "direction"
+        ],
+        "title": "DepthInfo",
+        "description": "Represents depth information for recursive flag retrieval, indicating if the relationship is upstream or downstream."
+      },
       "DisplayFlagResponse": {
         "properties": {
           "id": {
@@ -8811,11 +8837,34 @@
             "type": "string",
             "format": "date-time",
             "title": "The last time the graph counts were updated",
-            "default": "2026-02-25T19:27:10.376906Z"
+            "default": "2026-03-25T14:20:26.495965Z"
           }
         },
         "type": "object",
         "title": "EntityGraphCounts"
+      },
+      "EntityHsCodes": {
+        "properties": {
+          "incoming": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Incoming",
+            "description": "HS codes for products received by this entity"
+          },
+          "outgoing": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Outgoing",
+            "description": "HS codes for products shipped by this entity"
+          }
+        },
+        "type": "object",
+        "title": "EntityHsCodes",
+        "description": "HS codes organized by trade direction for an Entity"
       },
       "EntitySearchResult": {
         "properties": {
@@ -9158,6 +9207,33 @@
         "title": "ExternalBulkFlagResponse",
         "description": "Response model for external bulk flag operations."
       },
+      "ExternalEntityId": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "description": "The external identifier value"
+          },
+          "type": {
+            "type": "string",
+            "title": "Type",
+            "description": "The type of the identifier (e.g. lei, us_fein)"
+          },
+          "source": {
+            "type": "string",
+            "title": "Source",
+            "description": "The source of the identifier"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "type",
+          "source"
+        ],
+        "title": "ExternalEntityId",
+        "description": "External identifier for an Entity"
+      },
       "ExternalEnttiyId": {
         "properties": {
           "id": {
@@ -9216,7 +9292,7 @@
           "extraction_schema_version"
         ],
         "title": "ExtractionMetadata",
-        "description": "Metadata describing models, techniques, schemas, etc. that were used to\nextract the Risk Event from plain text, and/or make decisions about the\nrelevance of the extracted content.\n\nAttributes:\n    model_vendor: Name of LLM vendor (e.g. Anthropic, OpenAI) used to extract Risk Event information\n\n    model_id: Specific LLM model id (e.g. \"claude-3-haiku-20240307\")\n\n    extraction_schema_name: Name of Pydantic ExtractionSchema class that\n    provided the JSON schema for Risk Event extraction.\n\n    extraction_schema_version: Version of Pydantic ExtractionSchema class\n    that provided the JSON schema for RiskEvent extraction. During\n    extraction, LLM decision-making is mainly guided by instructions\n    provided in the 'description' of each ExctractionSchema attribute. When\n    these instructions change, 'extraction_schema_version' is incremented to\n    track the change."
+        "description": "Metadata describing models, techniques, schemas, etc. that were used to\nextract the Risk Event from plain text, and/or make decisions about the\nrelevance of the extracted content.\n\nAttributes:\n    model_vendor: Name of LLM vendor (e.g. Anthropic, OpenAI) used to extract Risk Event information\n\n    model_id: Specific LLM model id (e.g. \"claude-haiku-4-5\")\n\n    extraction_schema_name: Name of Pydantic ExtractionSchema class that\n    provided the JSON schema for Risk Event extraction.\n\n    extraction_schema_version: Version of Pydantic ExtractionSchema class\n    that provided the JSON schema for RiskEvent extraction. During\n    extraction, LLM decision-making is mainly guided by instructions\n    provided in the 'description' of each ExctractionSchema attribute. When\n    these instructions change, 'extraction_schema_version' is incremented to\n    track the change."
       },
       "Facet": {
         "properties": {
@@ -9682,17 +9758,6 @@
         "title": "FlaggedRelationshipsResponse",
         "description": "Response model for flagged paths data.\n\nContains paths to flagged entities along with all related entities,\nrelationships, and flags. All ObjectIds are serialized as strings\nfor JSON compatibility."
       },
-      "Flags": {
-        "properties": {
-          "total": {
-            "type": "integer",
-            "title": "The number of flags found on an entity.",
-            "default": 0
-          }
-        },
-        "type": "object",
-        "title": "Flags"
-      },
       "GetEntityResponse": {
         "properties": {
           "id": {
@@ -9792,6 +9857,38 @@
             "title": "Inferred Relationships Count",
             "description": "The number of inferred relationships in the graph.  Will not be present if the graph counts have not been calculated yet.",
             "$ref": "#/components/schemas/EntityGraphCounts",
+            "nullable": true
+          },
+          "flagged": {
+            "type": "boolean",
+            "title": "Flagged",
+            "description": "Whether the Entity has active Flags visible to the requesting organization.",
+            "default": false
+          },
+          "has_positive_flags": {
+            "type": "boolean",
+            "title": "Has Positive Flags",
+            "description": "Whether the Entity has any positive/compliant flags.",
+            "default": false
+          },
+          "has_negative_flags": {
+            "type": "boolean",
+            "title": "Has Negative Flags",
+            "description": "Whether the Entity has any negative/risk flags.",
+            "default": false
+          },
+          "external_ids": {
+            "title": "External Ids",
+            "description": "External identifiers for the Entity.",
+            "items": {
+              "$ref": "#/components/schemas/ExternalEntityId"
+            },
+            "type": "array",
+            "nullable": true
+          },
+          "hs_codes": {
+            "description": "Harmonized System codes for products traded by this entity, organized by direction.",
+            "$ref": "#/components/schemas/EntityHsCodes",
             "nullable": true
           }
         },
@@ -10223,17 +10320,6 @@
         ],
         "title": "PublicRelationship",
         "description": "Public relationship response model - only exposes what consumers need"
-      },
-      "RelationshipCount": {
-        "properties": {
-          "count": {
-            "type": "integer",
-            "title": "The number of relationships found on an entity.",
-            "default": 0
-          }
-        },
-        "type": "object",
-        "title": "RelationshipCount"
       },
       "RelationshipTypeCategoriesResponse": {
         "properties": {
@@ -12103,7 +12189,7 @@
         "properties": {
           "flags": {
             "title": "Information about flags found for an entity",
-            "$ref": "#/components/schemas/Flags",
+            "$ref": "#/components/schemas/earthstream_services__services__entity__common__entity_dto__Flags",
             "nullable": true
           },
           "relationships": {
@@ -12115,6 +12201,28 @@
         "type": "object",
         "title": "EntityReferences"
       },
+      "earthstream_services__services__entity__common__entity_dto__Flags": {
+        "properties": {
+          "total": {
+            "type": "integer",
+            "title": "The number of flags found on an entity.",
+            "default": 0
+          }
+        },
+        "type": "object",
+        "title": "Flags"
+      },
+      "earthstream_services__services__entity__common__entity_dto__RelationshipCount": {
+        "properties": {
+          "count": {
+            "type": "integer",
+            "title": "The number of relationships found on an entity.",
+            "default": 0
+          }
+        },
+        "type": "object",
+        "title": "RelationshipCount"
+      },
       "earthstream_services__services__entity__common__entity_dto__Relationships": {
         "properties": {
           "total": {
@@ -12124,12 +12232,12 @@
           },
           "from_relationships": {
             "title": "\n            The relationships where the given entity is on the 'from' side.\n            These relationships are considered 'outbound' from the entity.\n        ",
-            "$ref": "#/components/schemas/RelationshipCount",
+            "$ref": "#/components/schemas/earthstream_services__services__entity__common__entity_dto__RelationshipCount",
             "nullable": true
           },
           "to_relationships": {
             "title": "\n            The relationships where the given entity is on the 'to' side.\n            These relationships are considered 'inbound' to the entity.\n        ",
-            "$ref": "#/components/schemas/RelationshipCount",
+            "$ref": "#/components/schemas/earthstream_services__services__entity__common__entity_dto__RelationshipCount",
             "nullable": true
           }
         },
@@ -12140,7 +12248,7 @@
         "properties": {
           "flags": {
             "title": "Information about flags found for an entity",
-            "$ref": "#/components/schemas/Flags",
+            "$ref": "#/components/schemas/earthstream_services__services__entity__common__entity_dto__Flags",
             "nullable": true
           },
           "relationships": {
@@ -12166,12 +12274,12 @@
           },
           "from_relationships": {
             "title": "The relationships where the given entity in on the from side",
-            "$ref": "#/components/schemas/RelationshipCount",
+            "$ref": "#/components/schemas/earthstream_services__services__entity__common__entity_dto__RelationshipCount",
             "nullable": true
           },
           "to_relationships": {
             "title": "The relationships where the given entity in on the to side",
-            "$ref": "#/components/schemas/RelationshipCount",
+            "$ref": "#/components/schemas/earthstream_services__services__entity__common__entity_dto__RelationshipCount",
             "nullable": true
           }
         },
