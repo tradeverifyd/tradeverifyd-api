@@ -8837,7 +8837,7 @@
             "type": "string",
             "format": "date-time",
             "title": "The last time the graph counts were updated",
-            "default": "2026-06-18T19:33:55.461730Z"
+            "default": "2026-06-18T23:50:27.980646Z"
           }
         },
         "type": "object",
