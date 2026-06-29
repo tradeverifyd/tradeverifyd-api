@@ -8837,7 +8837,7 @@
             "type": "string",
             "format": "date-time",
             "title": "The last time the graph counts were updated",
-            "default": "2026-06-18T23:50:27.980646Z"
+            "default": "2026-06-29T17:45:41.686190Z"
           }
         },
         "type": "object",
@@ -12212,6 +12212,17 @@
         "type": "object",
         "title": "Flags"
       },
+      "earthstream_services__services__entity__common__entity_dto__RelationshipCount": {
+        "properties": {
+          "count": {
+            "type": "integer",
+            "title": "The number of relationships found on an entity.",
+            "default": 0
+          }
+        },
+        "type": "object",
+        "title": "RelationshipCount"
+      },
       "earthstream_services__services__entity__common__entity_dto__Relationships": {
         "properties": {
           "total": {
@@ -12221,12 +12232,12 @@
           },
           "from_relationships": {
             "title": "\n            The relationships where the given entity is on the 'from' side.\n            These relationships are considered 'outbound' from the entity.\n        ",
-            "$ref": "#/components/schemas/earthstream_services__services__entity__common__search_models__RelationshipCount",
+            "$ref": "#/components/schemas/earthstream_services__services__entity__common__entity_dto__RelationshipCount",
             "nullable": true
           },
           "to_relationships": {
             "title": "\n            The relationships where the given entity is on the 'to' side.\n            These relationships are considered 'inbound' to the entity.\n        ",
-            "$ref": "#/components/schemas/earthstream_services__services__entity__common__search_models__RelationshipCount",
+            "$ref": "#/components/schemas/earthstream_services__services__entity__common__entity_dto__RelationshipCount",
             "nullable": true
           }
         },
@@ -12254,17 +12265,6 @@
         "type": "object",
         "title": "EntityReferences"
       },
-      "earthstream_services__services__entity__common__search_models__RelationshipCount": {
-        "properties": {
-          "count": {
-            "type": "integer",
-            "title": "The number of relationships found on an entity.",
-            "default": 0
-          }
-        },
-        "type": "object",
-        "title": "RelationshipCount"
-      },
       "earthstream_services__services__entity__common__search_models__Relationships": {
         "properties": {
           "total": {
@@ -12274,12 +12274,12 @@
           },
           "from_relationships": {
             "title": "The relationships where the given entity in on the from side",
-            "$ref": "#/components/schemas/earthstream_services__services__entity__common__search_models__RelationshipCount",
+            "$ref": "#/components/schemas/earthstream_services__services__entity__common__entity_dto__RelationshipCount",
             "nullable": true
           },
           "to_relationships": {
             "title": "The relationships where the given entity in on the to side",
-            "$ref": "#/components/schemas/earthstream_services__services__entity__common__search_models__RelationshipCount",
+            "$ref": "#/components/schemas/earthstream_services__services__entity__common__entity_dto__RelationshipCount",
             "nullable": true
           }
         },
