@@ -8837,7 +8837,7 @@
             "type": "string",
             "format": "date-time",
             "title": "The last time the graph counts were updated",
-            "default": "2026-07-07T17:23:15.999985Z"
+            "default": "2026-07-13T17:20:21.089257Z"
           }
         },
         "type": "object",
@@ -12189,7 +12189,7 @@
         "properties": {
           "flags": {
             "title": "Information about flags found for an entity",
-            "$ref": "#/components/schemas/earthstream_services__services__entity__common__entity_dto__Flags",
+            "$ref": "#/components/schemas/earthstream_services__services__entity__common__search_models__Flags",
             "nullable": true
           },
           "relationships": {
@@ -12201,16 +12201,16 @@
         "type": "object",
         "title": "EntityReferences"
       },
-      "earthstream_services__services__entity__common__entity_dto__Flags": {
+      "earthstream_services__services__entity__common__entity_dto__RelationshipCount": {
         "properties": {
-          "total": {
+          "count": {
             "type": "integer",
-            "title": "The number of flags found on an entity.",
+            "title": "The number of relationships found on an entity.",
             "default": 0
           }
         },
         "type": "object",
-        "title": "Flags"
+        "title": "RelationshipCount"
       },
       "earthstream_services__services__entity__common__entity_dto__Relationships": {
         "properties": {
@@ -12221,12 +12221,12 @@
           },
           "from_relationships": {
             "title": "\n            The relationships where the given entity is on the 'from' side.\n            These relationships are considered 'outbound' from the entity.\n        ",
-            "$ref": "#/components/schemas/earthstream_services__services__entity__common__search_models__RelationshipCount",
+            "$ref": "#/components/schemas/earthstream_services__services__entity__common__entity_dto__RelationshipCount",
             "nullable": true
           },
           "to_relationships": {
             "title": "\n            The relationships where the given entity is on the 'to' side.\n            These relationships are considered 'inbound' to the entity.\n        ",
-            "$ref": "#/components/schemas/earthstream_services__services__entity__common__search_models__RelationshipCount",
+            "$ref": "#/components/schemas/earthstream_services__services__entity__common__entity_dto__RelationshipCount",
             "nullable": true
           }
         },
@@ -12237,7 +12237,7 @@
         "properties": {
           "flags": {
             "title": "Information about flags found for an entity",
-            "$ref": "#/components/schemas/earthstream_services__services__entity__common__entity_dto__Flags",
+            "$ref": "#/components/schemas/earthstream_services__services__entity__common__search_models__Flags",
             "nullable": true
           },
           "relationships": {
@@ -12254,16 +12254,16 @@
         "type": "object",
         "title": "EntityReferences"
       },
-      "earthstream_services__services__entity__common__search_models__RelationshipCount": {
+      "earthstream_services__services__entity__common__search_models__Flags": {
         "properties": {
-          "count": {
+          "total": {
             "type": "integer",
-            "title": "The number of relationships found on an entity.",
+            "title": "The number of flags found on an entity.",
             "default": 0
           }
         },
         "type": "object",
-        "title": "RelationshipCount"
+        "title": "Flags"
       },
       "earthstream_services__services__entity__common__search_models__Relationships": {
         "properties": {
@@ -12274,12 +12274,12 @@
           },
           "from_relationships": {
             "title": "The relationships where the given entity in on the from side",
-            "$ref": "#/components/schemas/earthstream_services__services__entity__common__search_models__RelationshipCount",
+            "$ref": "#/components/schemas/earthstream_services__services__entity__common__entity_dto__RelationshipCount",
             "nullable": true
           },
           "to_relationships": {
             "title": "The relationships where the given entity in on the to side",
-            "$ref": "#/components/schemas/earthstream_services__services__entity__common__search_models__RelationshipCount",
+            "$ref": "#/components/schemas/earthstream_services__services__entity__common__entity_dto__RelationshipCount",
             "nullable": true
           }
         },
