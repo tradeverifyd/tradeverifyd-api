@@ -8837,7 +8837,7 @@
             "type": "string",
             "format": "date-time",
             "title": "The last time the graph counts were updated",
-            "default": "2026-07-13T17:20:21.089257Z"
+            "default": "2026-07-20T16:50:05.374936Z"
           }
         },
         "type": "object",
@@ -12189,7 +12189,7 @@
         "properties": {
           "flags": {
             "title": "Information about flags found for an entity",
-            "$ref": "#/components/schemas/earthstream_services__services__entity__common__search_models__Flags",
+            "$ref": "#/components/schemas/earthstream_services__services__entity__common__entity_dto__Flags",
             "nullable": true
           },
           "relationships": {
@@ -12200,6 +12200,17 @@
         },
         "type": "object",
         "title": "EntityReferences"
+      },
+      "earthstream_services__services__entity__common__entity_dto__Flags": {
+        "properties": {
+          "total": {
+            "type": "integer",
+            "title": "The number of flags found on an entity.",
+            "default": 0
+          }
+        },
+        "type": "object",
+        "title": "Flags"
       },
       "earthstream_services__services__entity__common__entity_dto__RelationshipCount": {
         "properties": {
@@ -12237,7 +12248,7 @@
         "properties": {
           "flags": {
             "title": "Information about flags found for an entity",
-            "$ref": "#/components/schemas/earthstream_services__services__entity__common__search_models__Flags",
+            "$ref": "#/components/schemas/earthstream_services__services__entity__common__entity_dto__Flags",
             "nullable": true
           },
           "relationships": {
@@ -12253,17 +12264,6 @@
         },
         "type": "object",
         "title": "EntityReferences"
-      },
-      "earthstream_services__services__entity__common__search_models__Flags": {
-        "properties": {
-          "total": {
-            "type": "integer",
-            "title": "The number of flags found on an entity.",
-            "default": 0
-          }
-        },
-        "type": "object",
-        "title": "Flags"
       },
       "earthstream_services__services__entity__common__search_models__Relationships": {
         "properties": {
